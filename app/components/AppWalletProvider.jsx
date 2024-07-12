@@ -9,11 +9,8 @@ import { clusterApiUrl } from "@solana/web3.js";
 // Default styles that can be overridden by your app
 require("@solana/wallet-adapter-react-ui/styles.css");
 
-export default function AppWalletProvider({
-    children,
-}: {
-    children: React.ReactNode;
-}) {
+export default function AppWalletProvider({ children }) {
+
     const network = WalletAdapterNetwork.Devnet;
     const endpoint = useMemo(() => clusterApiUrl(network), [network]);
     const wallets = useMemo(
@@ -27,11 +24,10 @@ export default function AppWalletProvider({
     return (
         <ConnectionProvider endpoint={endpoint}>
             <WalletProvider wallets={wallets} autoConnect>
-                <WalletModalProvider>{children}
+                <WalletModalProvider>
+                    {children}
                 </WalletModalProvider>
-
             </WalletProvider>
-
         </ConnectionProvider>
     );
 }

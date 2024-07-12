@@ -1,26 +1,22 @@
-import type { Metadata } from "next";
-import { Inter as FontSans } from "next/font/google"
 import "./globals.css";
+import { Inter as FontSans } from "next/font/google"
+
 import AppWalletProvider from "../components/AppWalletProvider";
 import { ThemeProvider } from "@/components/themeProvider"
 
 import { cn } from "@/lib/utils"
 
-export const metadata: Metadata = {
-  title: "Sol Vote Dapp",
-  description: "Alyra Solana Vote Dapp By Turing Team #26",
-};
-
 const fontSans = FontSans({
   subsets: ["latin"],
   variable: "--font-sans",
-})
+});
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export const metadata = {
+  title: "Liquid Democracy",
+  description: "Alyra Solana Vote Dapp By Turing Team #26",
+};
+
+export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={cn(

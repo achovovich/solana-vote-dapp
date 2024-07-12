@@ -5,7 +5,7 @@ import { getSolanaBalance } from '../../helpers/solana.helpers';
 export default function Balance() {
 
     const wallet = useWallet();
-    const [solanaBalance, setSolanaBalance] = useState<number | null>(null);
+    const [solanaBalance, setSolanaBalance] = useState(null);
 
     useEffect(() => {
         if (wallet.publicKey) {
