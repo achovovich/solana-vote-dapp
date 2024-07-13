@@ -29,7 +29,7 @@ export default function Layout({ children }) {
     const endpoint = clusterApiUrl(WalletAdapterNetwork.Devnet);
     const wallets = useMemo(
         () => [
-            new PhantomWalletAdapter(),
+            // new PhantomWalletAdapter(),
         ],
         []
     );

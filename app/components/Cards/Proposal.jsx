@@ -11,13 +11,6 @@ import {
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select"
 
 export function ProposalCard() {
     return (
@@ -45,7 +38,6 @@ export function ProposalCard() {
                 </form>
             </CardContent>
             <CardFooter className="flex justify-between flex-row-reverse">
-                {/* <Button variant="outline">Cancel</Button> */}
                 <Button>Creer</Button>
             </CardFooter>
         </Card>

@@ -1,11 +1,10 @@
 import { useAppContext } from "../../context/context";
 import Link from 'next/link';
-import Vote from "./Vote";
-import style from './ViewVotes.module.css';
-
-import PageTitle from "@/components/PageTitle"
 import ListPaginate from "@/components/ListPaginate"
 import { BarChartIcon, ArrowTopRightIcon } from '@radix-ui/react-icons'
+import PageTitle from "@/components/PageTitle"
+import { Label } from "@/components/ui/label"
+import { Switch } from "@/components/ui/switch"
 
 import {
     Table,
@@ -17,26 +16,24 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import { Label } from "@/components/ui/label"
-import { Switch } from "@/components/ui/switch"
 
 export default function ViewVotes() {
 
     const context = useAppContext();
     const { votes } = useAppContext();
-    
+
     votes?.map((vote) => (
         console.log(vote)
     ));
     return (
-        
+
         <div >
             <div className='flex justify-between items-center'>
-                <PageTitle text={"Liste des votes"} />
-                <div className='flex items-center'>
+                <PageTitle text={"Liste des votes"} className />
+                {/* <div className='flex items-center'>
                     <Switch id="archive-mode" className='mr-2' />
                     <Label htmlFor="archive-mode" className='items-center'>Archive</Label>
-                </div>
+                </div> */}
             </div>
             <Table>
                 <TableCaption></TableCaption>
@@ -66,25 +63,11 @@ export default function ViewVotes() {
                         <TableCell colSpan={4}>
                             <ListPaginate />
                         </TableCell>
-                        {/* <TableCell className="text-right">$2,500 / 1000</TableCell> */}
                     </TableRow>
                 </TableFooter>
             </Table>
 
             <Link href="/">Retour à l'accueil</Link>
-        </div>  
-
-        // <div>
-        //     {votes?.map((vote) => (
-        //         <div key={vote.publicKey} className="mb-2 p-2 rounded shadow">
-        //             <Vote key={vote.publicKey} {...vote} />
-        //         </div>
-        //     ))}
-        // </div>
+        </div>
     );
 };
-
-// margin-bottom: 20px;
-// padding: 15px;
-// border-radius: 10px;
-// box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);

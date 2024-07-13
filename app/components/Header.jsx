@@ -14,9 +14,9 @@ export default function Header() {
                 <h1 className='text-2xl font-bold'>Liquid Democracy</h1>
                 <Nav />
             </div>
-            <div className='flex flex-row-reverse items-center'>
-                <WalletMultiButton />
+            <div className='flex flex-row items-center'>
                 <Balance />
+                <WalletMultiButton />
             </div>
         </div >
     )
