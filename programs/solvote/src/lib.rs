@@ -1,23 +1,20 @@
 use anchor_lang::prelude::*;
 
-declare_id!("4Cd7TvNJyjF2DFuWeKrMDJWqFtzCSH7Ry2VVM8E2DyeN");
+//  declare_id!("FPvAXS7DT9jbfLQtmKfMLJC7V7Jt6Lo6BoRw2xvbjYW7");
+declare_id!("BUwN8oMrqe2NXeF9Yxok6j6rHyBFE16SqkiaD8o55arZ");
 
-pub mod constants;
-pub mod errors;
+//pub mod constants;
+//pub mod errors;
 pub mod instructions;
 pub mod state;
 
 use instructions::*;
 
 #[program]
-pub mod solvote {
+mod solvote {
     use super::*;
 
-    pub fn initialize(ctx: Context<Initialize>) -> Result<()> {
-        msg!("Greetings from: {:?}", ctx.program_id);
-        Ok(())
+    pub fn init_app(ctx: Context<CreateApp>) -> Result<()> {
+        instructions::init_app(ctx)
     }
 }
-
-#[derive(Accounts)]
-pub struct Initialize {}
