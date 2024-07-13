@@ -1,0 +1,1 @@
+//Should receive all the constants of the program
