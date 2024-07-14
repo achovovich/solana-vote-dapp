@@ -1,17 +1,18 @@
 use anchor_lang::prelude::*;
 use crate::constants::MAX_OPTIONS_VALUE;
 //use crate::errors::VoteError;
-use crate::state::{Option, Proposal};
+use crate::state::{CommunitySpace, VoteOption, Proposal};
 
 pub fn create_proposal(
     ctx: Context<CreateProposal>,
-    name: String,
+    space_key: Pubkey,
+    title: String,
     description: String,
     options: Vec<String>,
     deadline: u64,
 ) -> Result<()> {
     let proposal_account = &mut ctx.accounts.proposal;
-    let space_account : AccountInfo = ctx.accounts.space.clone();
+    let space_account: &mut Account<CommunitySpace> = &mut ctx.accounts.community_space;
 
     space_account.proposal_count += 1;
 
@@ -21,15 +22,15 @@ pub fn create_proposal(
     //     VoteError::NotManyChoices
     // );
 
-    proposal_account.space = space_account.key;
-    proposal_account.name = name;
+    proposal_account.space_key = space_key;
+    proposal_account.title = title;
     proposal_account.description = description;
     proposal_account.deadline = deadline;
 
     let mut vec_options = Vec::new();
 
     for option in options {
-        let option = Option {
+        let option = VoteOption {
             label: option,
             count: 0,
         };
@@ -45,12 +46,12 @@ pub fn create_proposal(
 #[derive(Accounts)]
 pub struct CreateProposal<'info> {
     #[account(mut)]
-    pub space: Account<'info, Space>,
+    pub community_space: Account<'info, CommunitySpace>,
     #[account(
         init,
         payer = signer,
-        space = 8 + 32  + 32 + 32 + (32 + 8) * MAX_OPTIONS_VALUE + 8,
-        seeds = [b"proposal", space.key().as_ref(), &(space.proposal_count+1).to_le_bytes],
+        space = 8 + 32  + 32 + 32 + 32 + (32 + 8) * MAX_OPTIONS_VALUE + 64,
+        seeds = [b"proposal".as_ref(), &(community_space.proposal_count+1).to_le_bytes()],
         bump
     )]
     pub proposal: Account<'info, Proposal>,

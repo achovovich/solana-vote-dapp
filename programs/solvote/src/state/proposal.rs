@@ -2,15 +2,15 @@ use anchor_lang::prelude::*;
 
 #[account]
 pub struct Proposal {
-    pub space: Pubkey,
-    pub name: String,
+    pub space_key: Pubkey,
+    pub title: String,
     pub description: String,
-    pub options: Vec<Option>,
+    pub options: Vec<VoteOption>,
     pub deadline: u64,
 }
 
 #[derive(AnchorSerialize, AnchorDeserialize, Clone)]
-pub struct Option {
+pub struct VoteOption {
     pub label: String,
-    pub count: u64,
+    pub count: u32,
 }
