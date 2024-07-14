@@ -34,7 +34,7 @@ export default function SpacesList() {
         publicKey: "2"
     }, {
         title: "Vote 3",
-        publicKey: "3"
+        publicKey
     }];
     return (
 

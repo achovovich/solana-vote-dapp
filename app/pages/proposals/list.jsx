@@ -6,7 +6,7 @@ export default function ProposalsList() {
 
     return (
         <Layout>
-
+            Proposal
             <ViewVotes />
         </Layout>
     );

@@ -3,10 +3,7 @@ import { SystemProgram } from "@solana/web3.js";
 import { useAnchorWallet, useConnection } from "@solana/wallet-adapter-react";
 import { Keypair } from "@solana/web3.js";
 import { BN } from "bn.js";
-import {
-    getProgram,
-    getVoterAddress
-} from "../utils/program";
+import { getProgram, getVoterAddress, getProgramAccounts } from "../utils/program";
 import { confirmTx, mockWallet } from "../utils/helper";
 
 export const AppContext = createContext();
@@ -29,7 +26,7 @@ export const AppProvider = ({ children }) => {
         }
     }, [program]);
 
-    const [votes, setVotes] = useState([]);
+    const [votes, setVotes] = useState([]);    
 
     const viewVotes = async () => {
         const votes = await program.account.proposal.all();
@@ -81,6 +78,25 @@ export const AppProvider = ({ children }) => {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    const accounts = async () => {        
+        const account = await getProgramAccounts();                
+    };
+
     return (
         <AppContext.Provider
             value={{
@@ -88,6 +104,7 @@ export const AppProvider = ({ children }) => {
                 viewVotes,
                 vote,
                 votes,
+                accounts,
                 error,
                 success
             }}

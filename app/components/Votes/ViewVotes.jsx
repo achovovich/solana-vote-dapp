@@ -22,9 +22,6 @@ export default function ViewVotes() {
     const context = useAppContext();
     const { votes } = useAppContext();
 
-    votes?.map((vote) => (
-        console.log(vote)
-    ));
     return (
 
         <div >
@@ -53,7 +50,7 @@ export default function ViewVotes() {
                             <TableCell className="text-right">VOTE / TOTAL</TableCell>
                             <TableCell className="text-right flex flex-row items-center justify-between">
                                 <Link href="#"><BarChartIcon className='text-purple-400' /></Link>
-                                <Link href="#"><ArrowTopRightIcon className='text-purple-400' /></Link>
+                                <Link href={"/proposals/" + vote.publicKey}><ArrowTopRightIcon className='text-purple-400' /></Link>
                             </TableCell>
                         </TableRow>
                     ))}

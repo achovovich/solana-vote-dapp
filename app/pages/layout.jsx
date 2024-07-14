@@ -24,12 +24,11 @@ const fontSans = FontSans({
 })
 
 export default function Layout({ children }) {
-    const anchorWallet = useAnchorWallet();
 
     const endpoint = clusterApiUrl(WalletAdapterNetwork.Devnet);
     const wallets = useMemo(
         () => [
-            // new PhantomWalletAdapter(),
+            // 
         ],
         []
     );

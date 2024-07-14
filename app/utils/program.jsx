@@ -1,5 +1,5 @@
 import { AnchorProvider, Program } from "@project-serum/anchor";
-import { PublicKey } from "@solana/web3.js";
+import { PublicKey, Connection } from "@solana/web3.js";
 
 import IDL from "./idl.json";
 import {
@@ -18,6 +18,14 @@ export const getVoterAddress = async (votePublicKey, userPublicKey) => {
     return (
         await PublicKey.findProgramAddress(
             [votePublicKey.toBuffer(), userPublicKey.toBuffer()],
+            PROGRAM_ID
+        )
+    )[0];
+};
+
+export const getProgramAccounts = async () => {
+    return (
+        await Connection.getProgramAccounts(
             PROGRAM_ID
         )
     )[0];

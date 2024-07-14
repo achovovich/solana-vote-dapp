@@ -58,6 +58,7 @@
     @apply bg-background text-foreground;
   }
 
+  /* Hide Splash Error */
   nextjs-portal {
     display: none;
   }
