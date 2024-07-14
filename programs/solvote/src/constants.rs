@@ -1,1 +1,1 @@
-//Should receive all the constants of the program
+pub const MAX_OPTIONS_VALUE: usize = 5;
