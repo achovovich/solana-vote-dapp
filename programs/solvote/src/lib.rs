@@ -14,15 +14,8 @@ use instructions::*;
 mod solvote {
     use super::*;
 
-    pub fn init_app(ctx: Context<CreateApp>) -> Result<()> {
-        instructions::init_app(ctx)
-    }
-
-    pub fn create_space(ctx: Context<CreateSpace>,
-        space_name: String,
-        proposal_count: u32,   
-    ) -> Result<()> {
-        instructions::create_space(ctx, space_name, proposal_count)
+    pub fn create_space(ctx: Context<CreateSpace>, name: String) -> Result<()> {
+        instructions::create_space(ctx, name)
     }
 
 }
