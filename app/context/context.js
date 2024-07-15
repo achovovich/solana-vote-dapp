@@ -5,6 +5,7 @@ import { Keypair } from "@solana/web3.js";
 import { BN } from "bn.js";
 import { getProgram, getVoterAddress, getProgramAccounts } from "../utils/program";
 import { confirmTx, mockWallet } from "../utils/helper";
+// import { cp } from "fs";
 
 export const AppContext = createContext();
 
@@ -20,18 +21,7 @@ export const AppProvider = ({ children }) => {
         }
     }, [connection, wallet]);
 
-    useEffect(() => {
-        if (votes.length == 0) {
-            viewVotes();
-        }
-    }, [program]);
 
-    const [votes, setVotes] = useState([]);    
-
-    const viewVotes = async () => {
-        const votes = await program.account.proposal.all();
-        setVotes(votes);
-    }
 
     const createVote = async (title, description, optionsArray, deadline) => {
 
@@ -82,15 +72,32 @@ export const AppProvider = ({ children }) => {
 
 
 
+    
+    useEffect(() => {
+
+        if (proposals.length == 0) {
+            getProposals();
+        }
+
+        if (spaces.length == 0) {            
+            viewSpaces();            
+        }        
+
+    }, [program]);
 
 
-
-
-
-
-
-
-
+    const [proposals, setProposals] = useState([]);    
+    const getProposals = async () => {
+        const proposals = await program.account.proposal.all();
+        setProposals(proposals);
+    }
+    
+    const [spaces, setSpaces] = useState([]);    
+    const viewSpaces = async () => {        
+        const spaces = await program.account.communitySpace.all();       
+        setSpaces(spaces);
+    }
+    //TODO .fetch(publicKey) pour récupérer les données d'un espace
 
 
     const accounts = async () => {        
@@ -100,11 +107,12 @@ export const AppProvider = ({ children }) => {
     return (
         <AppContext.Provider
             value={{
-                createVote,
-                viewVotes,
-                vote,
-                votes,
+                createVote,                
+                vote,                
                 accounts,
+                proposals,
+                spaces,
+                viewSpaces,
                 error,
                 success
             }}

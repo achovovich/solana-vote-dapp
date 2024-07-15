@@ -20,42 +20,32 @@ import {
 export default function SpacesList() {
 
     const context = useAppContext();
-    // const { votes } = useAppContext();
+    const { spaces, viewSpaces } = useAppContext();
 
-    // votes?.map((vote) => (
-    //     console.log(vote)
+    // spaces?.map((space) => (
+    //     console.log(space)
     // ));
 
-    const votes = [{
-        title: "Vote 1",
-        publicKey: "1"
-    }, {
-        title: "Vote 2",
-        publicKey: "2"
-    }, {
-        title: "Vote 3",
-        publicKey
-    }];
     return (
 
         <div >
             <div className='flex justify-between items-center'>
-                <PageTitle text={"Liste des votes"} className />
+                <PageTitle text={"Liste des espaces de votes"} className />
             </div>
             <Table>
                 <TableCaption></TableCaption>
                 <TableHeader>
                     <TableRow>
                         <TableHead className="w-[300px]">Titre</TableHead>
-                        <TableHead className="text-right">Action</TableHead>
+                        <TableHead className="text-right">Actions</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {votes?.map((vote) => (
-                        <TableRow key={vote.publicKey}>
-                            <TableCell className="font-medium">{vote.title}</TableCell>
+                    {spaces?.map((space) => (
+                        <TableRow key={space.publicKey}>
+                            <TableCell className="font-medium">{space.account.name}</TableCell>
                             <TableCell className="text-right flex flex-row items-center justify-between">
-                                <Link href="#"><ArrowTopRightIcon className='text-purple-400' /></Link>
+                                <Link href={"spaces/" + space.publicKey}><ArrowTopRightIcon className='text-purple-400' /></Link>
                             </TableCell>
                         </TableRow>
                     ))}

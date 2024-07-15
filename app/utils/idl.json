@@ -1,14 +1,40 @@
 {
     "version": "0.1.0",
-    "name": "hello_anchor",
+    "name": "solvote",
     "instructions": [
         {
-            "name": "createProposal",
+            "name": "initApp",
             "accounts": [
                 {
-                    "name": "proposal",
+                    "name": "app",
+                    "isMut": true,
+                    "isSigner": false
+                },
+                {
+                    "name": "signer",
                     "isMut": true,
                     "isSigner": true
+                },
+                {
+                    "name": "systemProgram",
+                    "isMut": false,
+                    "isSigner": false
+                }
+            ],
+            "args": []
+        },
+        {
+            "name": "createSpace",
+            "accounts": [
+                {
+                    "name": "app",
+                    "isMut": true,
+                    "isSigner": false
+                },
+                {
+                    "name": "communitySpace",
+                    "isMut": true,
+                    "isSigner": false
                 },
                 {
                     "name": "signer",
@@ -22,6 +48,41 @@
                 }
             ],
             "args": [
+                {
+                    "name": "name",
+                    "type": "string"
+                }
+            ]
+        },
+        {
+            "name": "createProposal",
+            "accounts": [
+                {
+                    "name": "communitySpace",
+                    "isMut": true,
+                    "isSigner": false
+                },
+                {
+                    "name": "proposal",
+                    "isMut": true,
+                    "isSigner": false
+                },
+                {
+                    "name": "signer",
+                    "isMut": true,
+                    "isSigner": true
+                },
+                {
+                    "name": "systemProgram",
+                    "isMut": false,
+                    "isSigner": false
+                }
+            ],
+            "args": [
+                {
+                    "name": "spaceKey",
+                    "type": "publicKey"
+                },
                 {
                     "name": "title",
                     "type": "string"
@@ -31,7 +92,7 @@
                     "type": "string"
                 },
                 {
-                    "name": "choices",
+                    "name": "options",
                     "type": {
                         "vec": "string"
                     }
@@ -41,45 +102,30 @@
                     "type": "u64"
                 }
             ]
-        },
-        {
-            "name": "vote",
-            "accounts": [
-                {
-                    "name": "proposal",
-                    "isMut": true,
-                    "isSigner": false
-                },
-                {
-                    "name": "voter",
-                    "isMut": true,
-                    "isSigner": false
-                },
-                {
-                    "name": "signer",
-                    "isMut": true,
-                    "isSigner": true
-                },
-                {
-                    "name": "systemProgram",
-                    "isMut": false,
-                    "isSigner": false
-                }
-            ],
-            "args": [
-                {
-                    "name": "choiceIndex",
-                    "type": "u8"
-                }
-            ]
         }
     ],
     "accounts": [
+        {
+            "name": "App",
+            "type": {
+                "kind": "struct",
+                "fields": [
+                    {
+                        "name": "spaceCount",
+                        "type": "u32"
+                    }
+                ]
+            }
+        },
         {
             "name": "Proposal",
             "type": {
                 "kind": "struct",
                 "fields": [
+                    {
+                        "name": "spaceKey",
+                        "type": "publicKey"
+                    },
                     {
                         "name": "title",
                         "type": "string"
@@ -89,10 +135,10 @@
                         "type": "string"
                     },
                     {
-                        "name": "choices",
+                        "name": "options",
                         "type": {
                             "vec": {
-                                "defined": "Choice"
+                                "defined": "VoteOption"
                             }
                         }
                     },
@@ -104,21 +150,21 @@
             }
         },
         {
-            "name": "VoterTicket",
+            "name": "CommunitySpace",
             "type": {
                 "kind": "struct",
                 "fields": [
                     {
-                        "name": "proposal",
-                        "type": "publicKey"
+                        "name": "name",
+                        "type": "string"
                     },
                     {
-                        "name": "user",
-                        "type": "publicKey"
+                        "name": "proposalCount",
+                        "type": "u32"
                     },
                     {
-                        "name": "choiceIndex",
-                        "type": "u8"
+                        "name": "usersCount",
+                        "type": "u32"
                     }
                 ]
             }
@@ -126,7 +172,7 @@
     ],
     "types": [
         {
-            "name": "Choice",
+            "name": "VoteOption",
             "type": {
                 "kind": "struct",
                 "fields": [
@@ -136,17 +182,10 @@
                     },
                     {
                         "name": "count",
-                        "type": "u64"
+                        "type": "u32"
                     }
                 ]
             }
-        }
-    ],
-    "errors": [
-        {
-            "code": 6000,
-            "name": "NotManyChoices",
-            "msg": "Too many choices"
         }
     ]
 }
