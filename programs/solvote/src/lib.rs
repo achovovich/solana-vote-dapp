@@ -7,6 +7,8 @@ pub mod constants;
 pub mod instructions;
 pub mod state;
 
+use crate::state::HasVotedFor;
+
 use instructions::*;
 
 #[program]
@@ -21,7 +23,7 @@ mod solvote {
         instructions::create_space(ctx, name)
     }
 
-    pub fn create_proposal (
+    pub fn create_proposal(
         ctx: Context<CreateProposal>,
         space_key: Pubkey,
         title: String,
@@ -30,6 +32,10 @@ mod solvote {
         deadline: u64,
     ) -> Result<()> {
         instructions::create_proposal(ctx, space_key, title, description, options, deadline)
+    }
+
+    pub fn cast_vote(ctx: Context<CastVote>, options: Vec<HasVotedFor>) -> Result<()> {
+        instructions::cast_vote(ctx, options)
     }
 
 }
