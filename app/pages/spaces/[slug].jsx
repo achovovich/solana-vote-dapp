@@ -13,7 +13,6 @@ export default function SpacePage({ params }) {
     return (
         <Layout>
             <div>
-                <PageTitle text={"Space " + slug} />
                 <Space spaceKey={slug} />
                 <Link className="my-3" href="/spaces/list"> Retour aux Spaces</Link>
             </div>

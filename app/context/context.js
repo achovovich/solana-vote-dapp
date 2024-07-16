@@ -3,7 +3,7 @@ import { SystemProgram } from "@solana/web3.js";
 import { useAnchorWallet, useConnection } from "@solana/wallet-adapter-react";
 import { Keypair } from "@solana/web3.js";
 import { BN } from "bn.js";
-import { getProgram, getVoterAddress, getProgramAccounts } from "../utils/program";
+import { getProgram, getVoterAddress, getProgramAccounts, getProposalAddress } from "../utils/program";
 import { confirmTx, mockWallet } from "../utils/helper";
 // import { cp } from "fs";
 
@@ -115,6 +115,21 @@ export const AppProvider = ({ children }) => {
         const account = await getProgramAccounts();                
     };
 
+    const loadSpaceProposals = async (spaceKey, proposalCount) => {
+
+        let tmpProposal;
+        let proposalList = [];
+
+        for (let i = 0; i < proposalCount; i++) {
+            const proposalPubKey = await getProposalAddress(spaceKey, i);
+
+            tmpProposal = await getProposal(proposalPubKey.toString());
+            tmpProposal.publicKey = proposalPubKey.toString();
+            proposalList.push(tmpProposal);
+        }
+        return proposalList        
+    };
+
     return (
         <AppContext.Provider
             value={{
@@ -123,6 +138,7 @@ export const AppProvider = ({ children }) => {
                 accounts,
                 proposals,
                 getProposal,
+                loadSpaceProposals,
                 spaces,
                 viewSpaces,
                 getSpace,

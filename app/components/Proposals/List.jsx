@@ -1,6 +1,8 @@
+import React, { useEffect, useState } from "react";
 import { useAppContext } from "../../context/context";
 import Link from 'next/link';
 import ListPaginate from "@/components/ListPaginate"
+import { getProposalAddress } from "../../utils/program";
 import { BarChartIcon, ArrowTopRightIcon } from '@radix-ui/react-icons'
 import PageTitle from "@/components/PageTitle"
 import { Label } from "@/components/ui/label"
@@ -17,18 +19,30 @@ import {
     TableRow,
 } from "@/components/ui/table"
 
-export default function ProposalList({ spaceKey, spaceName, proposalList }) {
+export default function ProposalList({ spaceKey, proposalCount }) {
 
     const context = useAppContext();
-    const { spaces, viewSpaces } = useAppContext();
+    const { getSpace, getProposal, loadSpaceProposals } = useAppContext(); //    
+    const [spaceProposals, setSpaceProposals] = useState([]);
 
-    console.log("list", proposalList);
+    let proposalList = [];
+
+    useEffect(() => {
+
+        const load = async () => {
+            proposalList = await loadSpaceProposals(spaceKey, proposalCount)
+            setSpaceProposals(proposalList);
+        };
+
+        load();
+
+    }, [spaceKey, getSpace]);
 
     return (
 
         <div >
             <div className='flex justify-between items-center'>
-                <PageTitle text={"Liste des espaces de votes de " + spaceName} className />
+                <h2>Liste des espaces de votes disponible</h2>
             </div>
             <Table>
                 <TableCaption></TableCaption>
@@ -39,9 +53,9 @@ export default function ProposalList({ spaceKey, spaceName, proposalList }) {
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {proposalList?.map((proposal) => (
+                    {spaceProposals?.map((proposal) => (
                         <TableRow key={proposal.publicKey}>
-                            <TableCell className="font-medium">{proposal.account.title}</TableCell>
+                            <TableCell className="font-medium">{proposal.title}</TableCell>
                             <TableCell className="text-right flex flex-row items-center justify-between">
                                 <Link href={"/proposals/" + proposal.publicKey}><ArrowTopRightIcon className='text-purple-400' /></Link>
                             </TableCell>
