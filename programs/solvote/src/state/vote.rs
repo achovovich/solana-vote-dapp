@@ -5,10 +5,11 @@ pub struct Vote {
     pub proposal: Pubkey,
     pub user: Pubkey,
     pub has_voted_for: Vec<HasVotedFor>,
+    pub has_voted: bool,
 }
 
 #[derive(AnchorSerialize, AnchorDeserialize, Clone)]
 pub struct HasVotedFor {
-    pub index: u32,
-    pub ratio: u32,
+    pub index: u8,
+    pub ratio: u16,
 }
