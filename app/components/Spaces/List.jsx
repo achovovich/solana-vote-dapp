@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from "react";
 import { useAppContext } from "../../context/context";
 import Link from 'next/link';
 import ListPaginate from "@/components/ListPaginate"
@@ -5,6 +6,7 @@ import { BarChartIcon, ArrowTopRightIcon } from '@radix-ui/react-icons'
 import PageTitle from "@/components/PageTitle"
 import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
+import { Skeleton } from "@/components/ui/skeleton"
 
 import {
     Table,
@@ -20,11 +22,39 @@ import {
 export default function SpacesList() {
 
     const context = useAppContext();
-    const { spaces, viewSpaces } = useAppContext();
+    const { getApp, spaces, createSpace } = useAppContext();
 
-    // spaces?.map((space) => (
-    //     console.log(space)
-    // ));
+    const [app, setApp] = useState(null);
+
+    useEffect(() => {
+
+        const load = async () => {
+            let tmpApp = await getApp()
+            setApp(tmpApp);
+        };
+
+        load();
+
+    }, [getApp]);
+
+    if (!app) {
+        return (
+            <div>
+                <PageTitle text={"Chargement..."} className />
+                <Skeleton className="w-[300px] h-[20px] rounded-full" />
+            </div>
+        );
+    }
+
+    const setSpace = async (title, app, index) => {
+
+        console.log('setSpace', title, index);
+        return await createSpace(title, app, index);
+    }
+
+    console.log('app', app);
+    let test = setSpace('test' + app.account.spaceCount, app.publicKey, app.account.spaceCount);
+    console.log("test", test);
 
     return (
 

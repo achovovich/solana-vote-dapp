@@ -12,7 +12,7 @@ export default function SpaceAdd() {
     const [spaceName, setName] = useState('');
     const [spaceList, setSpaceList] = useState('');
 
-    const createSpace = () => {
+    const saveSpace = () => {
         console.log(spaceName);
         console.log(spaceList);
     }
@@ -35,7 +35,7 @@ export default function SpaceAdd() {
                 </form>
             </CardContent>
             <CardFooter className="flex justify-between flex-row-reverse">
-                <Button onClick={createSpace}>Creer</Button>
+                <Button onClick={saveSpace}>Creer</Button>
             </CardFooter>
         </Card>
     )

@@ -3,7 +3,7 @@ import { SystemProgram } from "@solana/web3.js";
 import { useAnchorWallet, useConnection } from "@solana/wallet-adapter-react";
 import { Keypair } from "@solana/web3.js";
 import { BN } from "bn.js";
-import { getProgram, getVoterAddress, getProgramAccounts, getProposalAddress } from "../utils/program";
+import { getProgram, getVoterAddress, getProgramAccounts, getProposalAddress, getSpaceAddress } from "../utils/program";
 import { confirmTx, mockWallet } from "../utils/helper";
 // import { cp } from "fs";
 
@@ -85,35 +85,27 @@ export const AppProvider = ({ children }) => {
 
     }, [program]);
 
-
-    const [proposals, setProposals] = useState([]);    
-    const getProposals = async () => {
-        const proposals = await program.account.proposal.all();
-        setProposals(proposals);
+    // =============================================================================================
+    // A P P  ======================================================================================
+    const getApp = async () => {        
+        return (
+            await program.account.app.all()
+        )[0]
     }
     
+    // =============================================================================================
+    // S P A C E S =================================================================================
     const [spaces, setSpaces] = useState([]);    
     const viewSpaces = async () => {        
         const spaces = await program.account.communitySpace.all();       
         setSpaces(spaces);
     }
-
-    // const [space, setSpace] = useState(["data"]);    
+    
     const getSpace = async (pubKey) => {        
         return (
             await program.account.communitySpace.fetch(pubKey)
         )        
     }
-
-    const getProposal = async (pubKey) => {        
-        return (
-            await program.account.proposal.fetch(pubKey)
-        )        
-    }
-
-    const accounts = async () => {        
-        const account = await getProgramAccounts();                
-    };
 
     const loadSpaceProposals = async (spaceKey, proposalCount) => {
 
@@ -122,7 +114,6 @@ export const AppProvider = ({ children }) => {
 
         for (let i = 0; i < proposalCount; i++) {
             const proposalPubKey = await getProposalAddress(spaceKey, i);
-
             tmpProposal = await getProposal(proposalPubKey.toString());
             tmpProposal.publicKey = proposalPubKey.toString();
             proposalList.push(tmpProposal);
@@ -130,15 +121,63 @@ export const AppProvider = ({ children }) => {
         return proposalList        
     };
 
+    const createSpace = async (title, appPublicKey, index) => {
+
+        const spacePublicKey = await getSpaceAddress(index);
+
+        console.log("spacePublicKey", spacePublicKey.toString())
+        console.log("title", title)
+        console.log("index", index)
+        console.log("appPublicKey", appPublicKey)
+        console.log("pgm", SystemProgram.programId)
+        
+        const tx = await program.methods
+            .createSpace(title)
+            .accounts({
+                app: appPublicKey,
+                communitySpace: spacePublicKey,
+                signer: wallet.publicKey,
+                systemProgram: SystemProgram.programId
+            })
+            .signers([appPublicKey])//[appPublicKey, spacePublicKey]
+            .rpc();
+
+        // // console.log("tx", tx)
+        await confirmTx(tx, connection)        
+    };
+
+    // =============================================================================================
+    // P R O P O S A L S ===========================================================================
+    const [proposals, setProposals] = useState([]);    
+    const getProposals = async () => {
+        const proposals = await program.account.proposal.all();
+        setProposals(proposals);
+    }
+
+    const getProposal = async (pubKey) => {        
+        return (
+            await program.account.proposal.fetch(pubKey)
+        )        
+    }
+
+
+
+
+    const accounts = async () => {        
+        const account = await getProgramAccounts();                
+    };
+
     return (
         <AppContext.Provider
             value={{
+                getApp,
                 createVote,                
                 vote,                
                 accounts,
                 proposals,
                 getProposal,
                 loadSpaceProposals,
+                createSpace,
                 spaces,
                 viewSpaces,
                 getSpace,
