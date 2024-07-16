@@ -8,6 +8,8 @@ pub enum VoteError {
     #[msg("Already voted")]
     AlreadyVoted,
     #[msg("Vote ratio exceeded")]
-    VoteRatioExceeded
+    VoteRatioExceeded,
+    #[msg("Too many options")]
+    ProposalOptionsExceeded,
 
 }
