@@ -28,3 +28,14 @@ export const getProgramAccounts = async () => {
         )
     )[0];
 };
+
+
+export const getProposalAddress = async (spacePublicKey, index) => {
+    spacePublicKey = new PublicKey(spacePublicKey);
+    return (
+        await PublicKey.findProgramAddressSync(
+            [Buffer.from("proposal"), spacePublicKey.toBuffer(), new Uint8Array(new Uint32Array([index + 1]).buffer)],
+            PROGRAM_ID
+        )
+    )[0];
+};

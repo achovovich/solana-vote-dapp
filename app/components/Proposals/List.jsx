@@ -17,20 +17,18 @@ import {
     TableRow,
 } from "@/components/ui/table"
 
-export default function SpacesList() {
+export default function ProposalList({ spaceKey, spaceName, proposalList }) {
 
     const context = useAppContext();
     const { spaces, viewSpaces } = useAppContext();
 
-    // spaces?.map((space) => (
-    //     console.log(space)
-    // ));
+    console.log("list", proposalList);
 
     return (
 
         <div >
             <div className='flex justify-between items-center'>
-                <PageTitle text={"Liste des espaces de votes"} className />
+                <PageTitle text={"Liste des espaces de votes de " + spaceName} className />
             </div>
             <Table>
                 <TableCaption></TableCaption>
@@ -41,11 +39,11 @@ export default function SpacesList() {
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {spaces?.map((space) => (
-                        <TableRow key={space.publicKey}>
-                            <TableCell className="font-medium">{space.account.name}</TableCell>
+                    {proposalList?.map((proposal) => (
+                        <TableRow key={proposal.publicKey}>
+                            <TableCell className="font-medium">{proposal.account.title}</TableCell>
                             <TableCell className="text-right flex flex-row items-center justify-between">
-                                <Link href={"/spaces/" + space.publicKey}><ArrowTopRightIcon className='text-purple-400' /></Link>
+                                <Link href={"/proposals/" + proposal.publicKey}><ArrowTopRightIcon className='text-purple-400' /></Link>
                             </TableCell>
                         </TableRow>
                     ))}
@@ -58,8 +56,6 @@ export default function SpacesList() {
                     </TableRow>
                 </TableFooter>
             </Table>
-
-            <Link href="/">Retour à l'accueil</Link>
         </div>
     );
 };

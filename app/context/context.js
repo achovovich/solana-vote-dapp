@@ -97,8 +97,19 @@ export const AppProvider = ({ children }) => {
         const spaces = await program.account.communitySpace.all();       
         setSpaces(spaces);
     }
-    //TODO .fetch(publicKey) pour récupérer les données d'un espace
 
+    // const [space, setSpace] = useState(["data"]);    
+    const getSpace = async (pubKey) => {        
+        return (
+            await program.account.communitySpace.fetch(pubKey)
+        )        
+    }
+
+    const getProposal = async (pubKey) => {        
+        return (
+            await program.account.proposal.fetch(pubKey)
+        )        
+    }
 
     const accounts = async () => {        
         const account = await getProgramAccounts();                
@@ -111,8 +122,11 @@ export const AppProvider = ({ children }) => {
                 vote,                
                 accounts,
                 proposals,
+                getProposal,
                 spaces,
                 viewSpaces,
+                getSpace,
+                program,
                 error,
                 success
             }}

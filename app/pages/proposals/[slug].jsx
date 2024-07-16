@@ -12,7 +12,7 @@ export default function ProposalPage({ params }) {
     return (
         <Layout>
             <div>
-                <PageTitle text={slug} />
+                <PageTitle text={"Proposal:" + slug} />
                 <Space proposalKey={slug} />
             </div>
 

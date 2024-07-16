@@ -12,7 +12,7 @@ export default function Header() {
             <div id="left" className='flex flex-row items-center'>
                 <Logo />
                 <h1 className='text-2xl font-bold'>Liquid Democracy</h1>
-                <Nav />
+                {/* <Nav /> */}
             </div>
             <div className='flex flex-row items-center'>
                 <Balance />
