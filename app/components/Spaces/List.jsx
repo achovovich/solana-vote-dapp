@@ -46,15 +46,19 @@ export default function SpacesList() {
         );
     }
 
-    const setSpace = async (title, app, index) => {
+    const setSpace = async () => { //title, app, index
+        let title = 'test' + app.account.spaceCount;
+        let index = app.account.spaceCount;
 
-        console.log('setSpace', title, index);
-        return await createSpace(title, app, index);
+        console.log('setSpace', title, index, app);
+        let s = await createSpace(title, app, index);
+        console.log("return", s);
+        return s;
     }
 
     console.log('app', app);
-    let test = setSpace('test' + app.account.spaceCount, app.publicKey, app.account.spaceCount);
-    console.log("test", test);
+    // let test = setSpace('test' + app.account.spaceCount, app.publicKey, app.account.spaceCount);
+    // console.log("test", test);
 
     return (
 
@@ -88,7 +92,12 @@ export default function SpacesList() {
                     </TableRow>
                 </TableFooter>
             </Table>
-
+            <div>
+                {/* <a onClick={setSpace('test' + app.account.spaceCount, app.publicKey, app.account.spaceCount)}> */}
+                <a onClick={setSpace}>
+                    Set Space !
+                </a>
+            </div>
             <Link href="/">Retour à l'accueil</Link>
         </div>
     );

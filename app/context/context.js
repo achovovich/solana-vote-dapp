@@ -122,28 +122,51 @@ export const AppProvider = ({ children }) => {
     };
 
     const createSpace = async (title, appPublicKey, index) => {
+        try {
+            const spacePublicKey = await getSpaceAddress(index);
+            if (!spacePublicKey) {
+                console.error("spacePublicKey is undefined");
+                return;
+            }
+            console.log("spacePublicKey", spacePublicKey.toBase58())
 
-        const spacePublicKey = await getSpaceAddress(index);
+            console.log("title + index", title, index)
 
-        console.log("spacePublicKey", spacePublicKey.toString())
-        console.log("title", title)
-        console.log("index", index)
-        console.log("appPublicKey", appPublicKey)
-        console.log("pgm", SystemProgram.programId)
-        
-        const tx = await program.methods
-            .createSpace(title)
-            .accounts({
-                app: appPublicKey,
-                communitySpace: spacePublicKey,
-                signer: wallet.publicKey,
-                systemProgram: SystemProgram.programId
-            })
-            .signers([appPublicKey])//[appPublicKey, spacePublicKey]
-            .rpc();
+            if (!appPublicKey || !appPublicKey.publicKey) {
+                console.error("appPublicKey or appPublicKey.publicKey is undefined");
+                return;
+            }        
+            console.log("appPublicKey", appPublicKey)
 
-        // // console.log("tx", tx)
-        await confirmTx(tx, connection)        
+            if (!wallet || !wallet.publicKey) {
+                console.error("wallet or wallet.publicKey is undefined");
+                return;
+            }
+            console.log("wallet.publicKey", wallet.publicKey);
+
+            console.log("SystemProgram.programId", SystemProgram.programId)
+            
+
+            // let utf8Encode = new TextEncoder();
+            // title = utf8Encode.encode(title);        
+            // title = stringToU8Array16(title);
+
+            const tx = await program.methods
+                .createSpace(title)
+                .accounts({
+                    app: appPublicKey.publicKey, //OK sinon rong input type for account "app" in the instruction accounts object for instruction "createSpace". Expected PublicKey or string.
+                    communitySpace: spacePublicKey,  
+                    signer: wallet.publicKey,
+                    systemProgram: SystemProgram.programId
+                })
+                .signers([wallet, spacePublicKey])//[appPublicKey, spacePublicKey]
+                .rpc();
+
+            // // console.log("tx", tx)
+            await confirmTx(tx, connection)    
+        } catch (error) {
+            console.error("Error in createSpace:", error);
+        }    
     };
 
     // =============================================================================================
