@@ -14,20 +14,13 @@ export default function SpaceAdd({ app }) {
 
     const { createSpace } = useAppContext();
 
-    const [spaceName, setName] = useState('');
+    const [spaceName, setSpaceName] = useState('');
+
 
     const saveSpace = async () => {
-        console.group("spaceAdd");
-        console.log("app", app);
-        console.log("Nom du space", spaceName);
 
         let index = app.spaceCount;
-        console.log('saveSpace', spaceName, index, app);
-
         let s = await createSpace(spaceName, app);
-        console.log("return", s);
-        console.groupEnd("spaceAdd");
-
         return s;
     }
 
@@ -40,7 +33,7 @@ export default function SpaceAdd({ app }) {
                     <div className="grid w-full items-center gap-4">
                         <div className="flex flex-col space-y-1.5">
                             <Label htmlFor="name">Nom de l'espace</Label>
-                            <Input id="name" placeholder="Titre l'espace de vote" onChange={(e) => setName(e.target.value)} />
+                            <Input id="name" placeholder="Titre l'espace de vote" onChange={(e) => setSpaceName(e.target.value)} />
                             {/* {errors.name && <span>The email is required</span>} */}
                         </div>
                         {/* <Label htmlFor="whitelist">Adresses authorisées à voter:</Label> */}

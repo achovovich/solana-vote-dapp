@@ -21,57 +21,68 @@ import {
     TableRow,
 } from "@/components/ui/table"
 
-export default function ProposalList({ spaceKey, proposalCount }) {
+export default function ProposalList({ space }) {
 
     const context = useAppContext();
-    const { getSpace, getProposal, loadSpaceProposals } = useAppContext(); //    
+
+    let spaceKey = space.publicKey;
+    let proposalCount = space.proposalCount;
+
+    const { loadSpaceProposals } = useAppContext();
     const [spaceProposals, setSpaceProposals] = useState([]);
 
+    console.log('space', space)
+
     let proposalList = [];
+    const load = async () => {
+        proposalList = await loadSpaceProposals(spaceKey, proposalCount)
+        setSpaceProposals(proposalList);
+    };
 
-    useEffect(() => {
-
-        const load = async () => {
-            proposalList = await loadSpaceProposals(spaceKey, proposalCount)
-            setSpaceProposals(proposalList);
-        };
-
+    if (!spaceProposals) {
         load();
-
-    }, [spaceKey, getSpace]);
+    }
 
     return (
-
-        <div >
-            <div className='flex justify-between items-center'>
-                <h2>Liste des espaces de votes disponible</h2>
-            </div>
-            <Table>
-                <TableCaption></TableCaption>
-                <TableHeader>
-                    <TableRow>
-                        <TableHead className="w-[300px]">Titre</TableHead>
-                        <TableHead className="text-right">Actions</TableHead>
-                    </TableRow>
-                </TableHeader>
-                <TableBody>
-                    {spaceProposals?.map((proposal) => (
-                        <TableRow key={proposal.publicKey}>
-                            <TableCell className="font-medium">{proposal.title}</TableCell>
-                            <TableCell className="text-right flex flex-row items-center justify-between">
-                                <Link href={"/proposals/" + proposal.publicKey}><ArrowTopRightIcon className='text-purple-400' /></Link>
-                            </TableCell>
-                        </TableRow>
-                    ))}
-                </TableBody>
-                <TableFooter>
-                    <TableRow>
-                        <TableCell colSpan={4}>
-                            <ListPaginate />
-                        </TableCell>
-                    </TableRow>
-                </TableFooter>
-            </Table>
-        </div>
+        <>
+            {!spaceProposals ? (
+                <div>
+                    <PageTitle text={"Chargement..."} />
+                    <Skeleton className="w-[100px] h-[20px] rounded-full" />
+                </div>
+            ) : (
+                <div >
+                    <div className='flex justify-between items-center'>
+                        <h2>Liste des votes disponible</h2>
+                    </div>
+                    <Table>
+                        <TableCaption></TableCaption>
+                        <TableHeader>
+                            <TableRow>
+                                <TableHead className="w-[300px]">Titre</TableHead>
+                                <TableHead className="text-right">Actions</TableHead>
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                            {spaceProposals?.map((proposal) => (
+                                <TableRow key={proposal.publicKey}>
+                                    <TableCell className="font-medium">{proposal.title}</TableCell>
+                                    <TableCell className="text-right flex flex-row items-center justify-between">
+                                        <Link href={"/proposals/" + proposal.publicKey}><ArrowTopRightIcon className='text-purple-400' /></Link>
+                                    </TableCell>
+                                </TableRow>
+                            ))}
+                        </TableBody>
+                        <TableFooter>
+                            <TableRow>
+                                <TableCell colSpan={4}>
+                                    <ListPaginate />
+                                </TableCell>
+                            </TableRow>
+                        </TableFooter>
+                    </Table>
+                </div>
+            )}
+        </>
     );
 };

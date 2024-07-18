@@ -104,9 +104,11 @@ export const AppProvider = ({ children }) => {
     }
     
     const getSpace = async (pubKey) => {        
-        return (
+        let space = (
             await program.account.communitySpace.fetch(pubKey)
         )        
+        space.publicKey = pubKey;
+        return space;
     }
 
     const loadSpaceProposals = async (spaceKey, proposalCount) => {

@@ -5,34 +5,40 @@ import { useAppContext } from "../../context/context";
 import { Skeleton } from "@/components/ui/skeleton"
 import ProposalList from "../Proposals/List";
 import PageTitle from "@/components/PageTitle"
+import ProposalAdd from '@/components/Cards/ProposalAdd';
 
 export default function Space({ spaceKey }) {
 
-    const { getSpace, proposals, getProposal } = useAppContext();
+    const { getSpace } = useAppContext();
     const [space, setSpace] = useState(null);
 
-    useEffect(() => {
-        const loadSpace = async () => {
-            const spaceData = await getSpace(spaceKey);
-            setSpace(spaceData);
-        };
+    const loadSpace = async () => {
+        console.log('spaceKey', spaceKey)
+        const spaceData = await getSpace(spaceKey);
+        setSpace(spaceData);
+        console.log('space', spaceData)
+    };
 
-        loadSpace();
-
-    }, [spaceKey, getSpace]);
+    // loadSpace();
 
     if (!space) {
-        return (
-            <div>
-                <Skeleton className="w-[100px] h-[20px] rounded-full" />
-            </div>
-        );
+        loadSpace();
     }
 
     return (
-        <div >
-            <PageTitle text={"Bienvenue dans votre espace " + space.name} />
-            <ProposalList spaceKey={spaceKey} proposalCount={space.proposalCount} />
-        </div>
+        <>
+            {!space ? (
+                <div>
+                    <PageTitle text={"Chargement..."} />
+                    <Skeleton className="w-[100px] h-[20px] rounded-full" />
+                </div>
+            ) : (
+                <div >
+                    <PageTitle text={"Bienvenue dans votre espace " + space.name} />
+                    <ProposalList space={space} />
+                    <ProposalAdd space={space} />
+                </div>
+            )}
+        </>
     );
 };
