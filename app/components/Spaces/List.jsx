@@ -49,7 +49,7 @@ export default function SpacesList({ app }) {
                     {spaces?.map((space) => (
                         <TableRow key={space.publicKey}>
                             <TableCell className="font-medium">{space.account.name}</TableCell>
-                            <TableCell className="text-right flex flex-row items-center justify-between">
+                            <TableCell className="text-right flex flex-row-reverse items-center justify-between">
                                 <Link href={"/spaces/" + space.publicKey}><ArrowTopRightIcon className='text-purple-400' /></Link>
                             </TableCell>
                         </TableRow>
