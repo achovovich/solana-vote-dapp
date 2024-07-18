@@ -12,6 +12,7 @@ export const AppContext = createContext();
 export const AppProvider = ({ children }) => {
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
+    const [refresh, setRefresh] = useState(false);
 
     const { connection } = useConnection();
 
@@ -190,6 +191,8 @@ export const AppProvider = ({ children }) => {
     return (
         <AppContext.Provider
             value={{
+                refresh,
+                setRefresh,
                 getApp,
                 createVote,                
                 vote,                

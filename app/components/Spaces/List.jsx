@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useAppContext } from "../../context/context";
 
 import Link from 'next/link';
@@ -14,14 +14,20 @@ import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, Tabl
 
 export default function SpacesList({ app }) {
 
-    const context = useAppContext();
     const [spaces, setSpaces] = useState();
-    const { getSpaces } = useAppContext();
+    const { getSpaces, refresh, setRefresh } = useAppContext();
 
     const load = async () => {
         let s = await getSpaces()
         setSpaces(s)
     }
+
+    useEffect(() => {
+        if (refresh) {
+            load();        
+        }
+        setRefresh(false);    
+    },[refresh]);  
 
     if (!spaces) {
         load();

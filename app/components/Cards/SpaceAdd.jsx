@@ -9,14 +9,16 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import CustomCardHeader from "./CardHeader"
 import { Textarea } from "@/components/ui/textarea"
+import { set } from "@project-serum/anchor/dist/cjs/utils/features";
 
 export default function SpaceAdd({ app }) {
 
-    const { createSpace } = useAppContext();
+    const { createSpace, setRefresh } = useAppContext();
 
     const [spaceName, setName] = useState('');
 
     const saveSpace = async () => {
+        
         console.group("spaceAdd");
         console.log("app", app);
         console.log("Nom du space", spaceName);
@@ -25,10 +27,10 @@ export default function SpaceAdd({ app }) {
         console.log('saveSpace', spaceName, index, app);
 
         let s = await createSpace(spaceName, app);
-        console.log("return", s);
+        //console.log("return", s);
         console.groupEnd("spaceAdd");
-
-        return s;
+        setRefresh(true);
+        //return s;
     }
 
     return (
