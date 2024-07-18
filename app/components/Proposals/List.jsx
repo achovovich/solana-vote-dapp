@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useEffect, useState } from "react";
 import { useAppContext } from "../../context/context";
 import Link from 'next/link';

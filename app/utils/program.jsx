@@ -30,6 +30,15 @@ export const getProgramAccounts = async () => {
 };
 
 
+export const getAppAddress = async () => {
+    return (
+        await PublicKey.findProgramAddressSync(
+            [Buffer.from("app")],
+            PROGRAM_ID
+        )
+    )[0];
+};
+
 export const getSpaceAddress = async (index) => {
     return (
         await PublicKey.findProgramAddressSync(

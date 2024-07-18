@@ -1,4 +1,7 @@
+"use client";
+
 import React, { useState } from "react"
+import { useAppContext } from "../../context/context";
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, } from "@/components/ui/card"
@@ -7,14 +10,25 @@ import { Label } from "@/components/ui/label"
 import CustomCardHeader from "./CardHeader"
 import { Textarea } from "@/components/ui/textarea"
 
-export default function SpaceAdd() {
+export default function SpaceAdd({ app }) {
+
+    const { createSpace } = useAppContext();
 
     const [spaceName, setName] = useState('');
-    const [spaceList, setSpaceList] = useState('');
 
-    const saveSpace = () => {
-        console.log(spaceName);
-        console.log(spaceList);
+    const saveSpace = async () => {
+        console.group("spaceAdd");
+        console.log("app", app);
+        console.log("Nom du space", spaceName);
+
+        let index = app.spaceCount;
+        console.log('saveSpace', spaceName, index, app);
+
+        let s = await createSpace(spaceName, app);
+        console.log("return", s);
+        console.groupEnd("spaceAdd");
+
+        return s;
     }
 
     return (
@@ -29,8 +43,8 @@ export default function SpaceAdd() {
                             <Input id="name" placeholder="Titre l'espace de vote" onChange={(e) => setName(e.target.value)} />
                             {/* {errors.name && <span>The email is required</span>} */}
                         </div>
-                        <Label htmlFor="whitelist">Adresses authorisées à voter:</Label>
-                        <Textarea placeholder="1 adresse par ligne" id="whitelist" onChange={(e) => setSpaceList(e.target.value)} />
+                        {/* <Label htmlFor="whitelist">Adresses authorisées à voter:</Label> */}
+                        {/* <Textarea placeholder="1 adresse par ligne" id="whitelist" onChange={(e) => setSpaceList(e.target.value)} /> */}
                     </div>
                 </form>
             </CardContent>

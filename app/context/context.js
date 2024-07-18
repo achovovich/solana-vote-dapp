@@ -1,7 +1,7 @@
 import { createContext, useState, useEffect, useContext, useMemo } from "react";
 import { SystemProgram } from "@solana/web3.js";
-import { useAnchorWallet, useConnection } from "@solana/wallet-adapter-react";
-import { Keypair } from "@solana/web3.js";
+import { useAnchorWallet, useConnection, useWallet } from "@solana/wallet-adapter-react";
+import { Keypair, Connection, PublicKey } from "@solana/web3.js";
 import { BN } from "bn.js";
 import { getProgram, getVoterAddress, getProgramAccounts, getProposalAddress, getSpaceAddress } from "../utils/program";
 import { confirmTx, mockWallet } from "../utils/helper";
@@ -14,7 +14,8 @@ export const AppProvider = ({ children }) => {
     const [success, setSuccess] = useState("");
 
     const { connection } = useConnection();
-    const wallet = useAnchorWallet();
+
+    const wallet = useAnchorWallet();//useWallet();
     const program = useMemo(() => {
         if (connection) {
             return getProgram(connection, wallet ?? mockWallet());
@@ -73,32 +74,33 @@ export const AppProvider = ({ children }) => {
 
 
     
-    useEffect(() => {
+    // useEffect(() => {
 
-        if (proposals.length == 0) {
-            getProposals();
-        }
+        // if (proposals.length == 0) {
+        //     // getProposals();
+        // }
 
-        if (spaces.length == 0) {            
-            viewSpaces();            
-        }        
+        // if (spaces.length == 0) {            
+        //     viewSpaces();            
+        // }        
 
-    }, [program]);
+    // }, [program]);
 
     // =============================================================================================
     // A P P  ======================================================================================
-    const getApp = async () => {        
-        return (
-            await program.account.app.all()
-        )[0]
+    const getApp = async (key) => {        
+        let app = (
+            await program.account.app.fetch(key)
+        )
+        app.publicKey = key;
+        return app;
     }
     
     // =============================================================================================
-    // S P A C E S =================================================================================
-    const [spaces, setSpaces] = useState([]);    
-    const viewSpaces = async () => {        
-        const spaces = await program.account.communitySpace.all();       
-        setSpaces(spaces);
+    // S P A C E S =================================================================================    
+    const getSpaces = async () => {        
+        const spaces = await program.account.communitySpace.all();               
+        return spaces;
     }
     
     const getSpace = async (pubKey) => {        
@@ -121,49 +123,44 @@ export const AppProvider = ({ children }) => {
         return proposalList        
     };
 
-    const createSpace = async (title, appPublicKey, index) => {
-        try {
-            const spacePublicKey = await getSpaceAddress(index);
+    const createSpace = async (title, app) => {
+        try {            
+            const spacePublicKey = await getSpaceAddress(app.spaceCount);
             if (!spacePublicKey) {
                 console.error("spacePublicKey is undefined");
                 return;
             }
-            console.log("spacePublicKey", spacePublicKey.toBase58())
 
-            console.log("title + index", title, index)
-
-            if (!appPublicKey || !appPublicKey.publicKey) {
-                console.error("appPublicKey or appPublicKey.publicKey is undefined");
+            if (!app) {
+                console.error("app is undefined");
                 return;
             }        
-            console.log("appPublicKey", appPublicKey)
+
+            if (!app.publicKey) {
+                console.error("app.publicKey is undefined");
+                return;
+            }                           
 
             if (!wallet || !wallet.publicKey) {
                 console.error("wallet or wallet.publicKey is undefined");
                 return;
             }
-            console.log("wallet.publicKey", wallet.publicKey);
-
-            console.log("SystemProgram.programId", SystemProgram.programId)
-            
-
-            // let utf8Encode = new TextEncoder();
-            // title = utf8Encode.encode(title);        
-            // title = stringToU8Array16(title);
 
             const tx = await program.methods
                 .createSpace(title)
                 .accounts({
-                    app: appPublicKey.publicKey, //OK sinon rong input type for account "app" in the instruction accounts object for instruction "createSpace". Expected PublicKey or string.
-                    communitySpace: spacePublicKey,  
+                    app: app.publicKey, 
+                    communitySpace: new PublicKey(spacePublicKey),  
                     signer: wallet.publicKey,
                     systemProgram: SystemProgram.programId
                 })
-                .signers([wallet, spacePublicKey])//[appPublicKey, spacePublicKey]
+                .signers([])
                 .rpc();
 
-            // // console.log("tx", tx)
-            await confirmTx(tx, connection)    
+            console.log("tx", tx)
+
+            await confirmTx(tx, connection)
+
         } catch (error) {
             console.error("Error in createSpace:", error);
         }    
@@ -201,8 +198,8 @@ export const AppProvider = ({ children }) => {
                 getProposal,
                 loadSpaceProposals,
                 createSpace,
-                spaces,
-                viewSpaces,
+                // spaces,
+                getSpaces,
                 getSpace,
                 program,
                 error,
