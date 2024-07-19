@@ -2,7 +2,7 @@ import React from 'react';
 import Layout from '../layout';
 import { useRouter } from 'next/router';
 import PageTitle from "@/components/PageTitle"
-import Space from "@/components/Spaces/Space"
+import Proposal from "@/components/Proposals/Proposal"
 
 export default function ProposalPage({ params }) {
 
@@ -12,8 +12,7 @@ export default function ProposalPage({ params }) {
     return (
         <Layout>
             <div>
-                <PageTitle text={"Proposal:" + slug} />
-                <Space proposalKey={slug} />
+                <Proposal proposalKey={slug} />
             </div>
 
         </Layout>

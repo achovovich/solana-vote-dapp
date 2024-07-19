@@ -12,11 +12,20 @@ import CustomCardHeader from "./CardHeader"
 
 export default function ProposalAdd({ space }) {
 
-    const { createSpace } = useAppContext();
 
-    const [title, setTitle] = useState('');
-    const [desc, setDesc] = useState('');
-    const [options, setOptions] = useState(Array(5).fill(''));
+    const currentTimestamp = new Date().getTime() / 1000;
+    const durationInSeconds = parseInt(1) * 24 * 60 * 60;
+    const d = parseInt(currentTimestamp + durationInSeconds);
+    // const o = 'option1, option2, option3, option4, option5';
+    // const optionsArray = o.split(',').map(option => option.trim());
+    // console.log("optionsArray", optionsArray);
+
+    const { createProposal } = useAppContext();
+
+    const [title, setTitle] = useState('titre');
+    const [desc, setDesc] = useState('desc');
+    const [options, setOptions] = useState(['option1', 'option2', 'option3', 'option4', 'option5']);//useState(Array(5).fill(''));
+    const [deadline, setDeadline] = useState(d);
 
     const handleOptionChange = (value, index) => {
         const updatedOptions = [...options];
@@ -26,19 +35,14 @@ export default function ProposalAdd({ space }) {
 
     const saveProposal = async () => {
 
-        console.log("app", app);
-        console.log("titre du proposal", title);
+        const currentTimestamp = new Date().getTime() / 1000;
+        const durationInSeconds = parseInt(deadline) * 24 * 60 * 60;
+        console.log(currentTimestamp, durationInSeconds)
+        let d = parseInt(currentTimestamp + durationInSeconds);
+        d = Number(deadline) || 0;
 
-        let index = space.proposalCount;
-        console.log('save', title, desc, options, index);
-
-        // let s = await createSpace(spaceName, app);
-        // console.log("return", s);
-
-        return s;
+        let p = await createProposal(title, desc, options, d, space);
     }
-
-
 
     return (
         <Card className="w-[500px]">
@@ -56,15 +60,19 @@ export default function ProposalAdd({ space }) {
                             <Input id="desc" placeholder="Saisissez ici les informations sur le vote" onChange={(e) => setDesc(e.target.value)} tabIndex="1" />
                             {/* {errors.name && <span> ... required</span>} */}
 
+                            <Label htmlFor="deadline">Durée du vote (en jours)</Label>
+                            <Input id="deadline" placeholder="" onChange={(e) => setDeadline(e.target.value)} tabIndex="2" />
+                            {/* {errors.name && <span> ... required</span>} */}
                             {options.map((option, i) => (
                                 <div key={i}>
-                                    <Label htmlFor={`option-${i}`}>Option {i + 1}</Label>
+                                    <Label htmlFor={`option-${i}`} className="my-2">Option {i + 1}</Label>
                                     <Input
                                         id={`option-${i}`}
                                         placeholder={`Option ${i + 1}`}
                                         value={option}
                                         onChange={(e) => handleOptionChange(e.target.value, i)}
-                                        tabIndex="{i+3}"
+                                        tabIndex="{i+4}"
+                                        className="my-2"
                                     />
                                 </div>
                             ))}

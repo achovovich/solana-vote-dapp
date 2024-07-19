@@ -1,58 +1,64 @@
 import React, { useEffect, useState } from "react";
 import { useAppContext } from "../../context/context";
-import { Skeleton } from "@/components/ui/skeleton"
 import { getProposalAddress } from "../../utils/program";
-// import ProposalList from ""
 
-//TODO: Implement the Proposal component
+import { Skeleton } from "@/components/ui/skeleton"
+import PageTitle from "@/components/PageTitle"
+import VoteAdd from "@/components/Cards/VoteAdd";
+
+
 export default function Proposal({ proposalKey }) {
 
-    const { getSpace, proposals, getProposal } = useAppContext();
-    const [space, setSpace] = useState(null);
+    const { getProposal } = useAppContext();
+    const [proposal, setProposal] = useState(null);
 
-    let proposalPubKey;
-    let proposalList = [];
+    let options = [];
 
-    useEffect(() => {
-        const loadSpace = async () => {
-            const spaceData = await getSpace(spaceKey);
-            setSpace(spaceData);
-            console.log(spaceData);
-            proposalPubKey = getProposalAddress(spaceKey, 0);
-            console.log(proposalPubKey);
+    const loadProposal = async () => {
 
-            for (let i = 0; i < spaceData.proposalCount; i++) {
-                const proposalPubKey = await getProposalAddress(spaceKey, i);
-                console.log(proposalPubKey)
-                console.log(`Proposal ${i} PubKey:`, proposalPubKey);
-                // prp = await getProposal(proposalPubKey);
-                // proposalList.push(prp);
+        const p = await getProposal(proposalKey);
+        console.log('proposalKey', proposalKey);
+        console.log('proposal', p);
+        setProposal(p);
 
-            }
-            // console.log(proposalList);
-        };
+        options = p.options;
 
-        loadSpace();
 
-        console.log('proposal', proposals);
+        // const spaceData = await getSpace(spaceKey);
+        // setSpace(spaceData);
+        // console.log(spaceData);
+        // proposalPubKey = getProposalAddress(spaceKey, 0);
+        // console.log(proposalPubKey);
 
-    }, [spaceKey, getSpace]);
+        // for (let i = 0; i < spaceData.proposalCount; i++) {
+        //     const proposalPubKey = await getProposalAddress(spaceKey, i);
+        //     console.log(proposalPubKey)
+        //     console.log(`Proposal ${i} PubKey:`, proposalPubKey);
+        //     // prp = await getProposal(proposalPubKey);
+        //     // proposalList.push(prp);
 
-    if (!space) {
-        return (
-            <div>
-                <Skeleton className="w-[100px] h-[20px] rounded-full" />
-            </div>
-        );
+        // }
+        // console.log(proposalList);
+    };
+
+    if (!proposal) {
+        loadProposal();
     }
 
     return (
-        <div >
-            Proposal "{space.name}"
-        </div>
+        <>
+            {!proposal ? (
+                <div>
+                    <PageTitle text={"Chargement..."} />
+                    <Skeleton className="w-[100px] h-[20px] rounded-full" />
+                </div>
+            ) : (
+                <div >
+                    <PageTitle text={"Vote " + proposal.title} />
+                    <h2>{proposal.description}</h2>
+                    <VoteAdd proposal={proposal} />
+                </div>
+            )}
+        </>
     );
 };
-
-// On doit tomber sur ca, via "mon space 1"
-// 66650233, 17471581, 52991045, 43891596, 8741835, 64812138, 39406725, 49981591, 39594824, 3386004, 0
-// 34521874, 37972438, 17949686, 65687763, 3565664, 58767368, 40314705, 1691698, 12652113, 2630429, 0

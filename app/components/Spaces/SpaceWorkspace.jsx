@@ -33,8 +33,9 @@ export default function SpaceWorkSpace() {
 
     return (
         <div >
-            <SpacesList app={app} />
             <SpaceAdd app={app} />
+            <SpacesList app={app} />
+            
         </div>
     );
 };

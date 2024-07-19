@@ -224,6 +224,10 @@
                                 "defined": "HasVotedFor"
                             }
                         }
+                    },
+                    {
+                        "name": "hasVoted",
+                        "type": "bool"
                     }
                 ]
             }
@@ -253,14 +257,41 @@
                 "fields": [
                     {
                         "name": "index",
-                        "type": "u32"
+                        "type": "u8"
                     },
                     {
                         "name": "ratio",
-                        "type": "u32"
+                        "type": "u16"
                     }
                 ]
             }
+        }
+    ],
+    "errors": [
+        {
+            "code": 6000,
+            "name": "ProposalIsOver",
+            "msg": "Proposal is closed"
+        },
+        {
+            "code": 6001,
+            "name": "ChoiceIndexOutOfScope",
+            "msg": "Choice index invalid"
+        },
+        {
+            "code": 6002,
+            "name": "AlreadyVoted",
+            "msg": "Already voted"
+        },
+        {
+            "code": 6003,
+            "name": "VoteRatioExceeded",
+            "msg": "Vote ratio exceeded"
+        },
+        {
+            "code": 6004,
+            "name": "ProposalOptionsExceeded",
+            "msg": "Too many options"
         }
     ]
 }

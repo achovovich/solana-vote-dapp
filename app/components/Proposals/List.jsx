@@ -9,6 +9,7 @@ import { BarChartIcon, ArrowTopRightIcon } from '@radix-ui/react-icons'
 import PageTitle from "@/components/PageTitle"
 import { Label } from "@/components/ui/label"
 import { Switch } from "@/components/ui/switch"
+import { Skeleton } from "@/components/ui/skeleton"
 
 import {
     Table,
@@ -29,7 +30,7 @@ export default function ProposalList({ space }) {
     let proposalCount = space.proposalCount;
 
     const { loadSpaceProposals } = useAppContext();
-    const [spaceProposals, setSpaceProposals] = useState([]);
+    const [spaceProposals, setSpaceProposals] = useState();
 
     console.log('space', space)
 
@@ -67,7 +68,7 @@ export default function ProposalList({ space }) {
                             {spaceProposals?.map((proposal) => (
                                 <TableRow key={proposal.publicKey}>
                                     <TableCell className="font-medium">{proposal.title}</TableCell>
-                                    <TableCell className="text-right flex flex-row items-center justify-between">
+                                    <TableCell className="text-right flex flex-row-reverse items-center justify-between">
                                         <Link href={"/proposals/" + proposal.publicKey}><ArrowTopRightIcon className='text-purple-400' /></Link>
                                     </TableCell>
                                 </TableRow>

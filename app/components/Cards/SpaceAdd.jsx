@@ -9,19 +9,19 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import CustomCardHeader from "./CardHeader"
 import { Textarea } from "@/components/ui/textarea"
+import { set } from "@project-serum/anchor/dist/cjs/utils/features";
 
 export default function SpaceAdd({ app }) {
 
-    const { createSpace } = useAppContext();
+    const { createSpace, setRefresh } = useAppContext();
 
     const [spaceName, setSpaceName] = useState('');
 
-
     const saveSpace = async () => {
-
         let index = app.spaceCount;
         let s = await createSpace(spaceName, app);
-        return s;
+        setRefresh(true);
+
     }
 
     return (

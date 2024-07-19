@@ -13,13 +13,10 @@ export default function Space({ spaceKey }) {
     const [space, setSpace] = useState(null);
 
     const loadSpace = async () => {
-        console.log('spaceKey', spaceKey)
         const spaceData = await getSpace(spaceKey);
         setSpace(spaceData);
         console.log('space', spaceData)
     };
-
-    // loadSpace();
 
     if (!space) {
         loadSpace();
@@ -34,7 +31,7 @@ export default function Space({ spaceKey }) {
                 </div>
             ) : (
                 <div >
-                    <PageTitle text={"Bienvenue dans votre espace " + space.name} />
+                    <PageTitle text={"Bienvenue dans l'espace " + space.name} />
                     <ProposalList space={space} />
                     <ProposalAdd space={space} />
                 </div>

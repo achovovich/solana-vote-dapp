@@ -12,6 +12,7 @@ export const AppContext = createContext();
 export const AppProvider = ({ children }) => {
     const [error, setError] = useState("");
     const [success, setSuccess] = useState("");
+    const [refresh, setRefresh] = useState(false);
 
     const { connection } = useConnection();
 
@@ -24,7 +25,7 @@ export const AppProvider = ({ children }) => {
 
 
 
-    const createVote = async (title, description, optionsArray, deadline) => {
+    const createVoteOLD = async (title, description, optionsArray, deadline) => {
 
         const proposalKeypair = Keypair.generate();
         const tx = await program.methods
@@ -43,7 +44,7 @@ export const AppProvider = ({ children }) => {
 
     };
 
-    const vote = async (index, proposalPubkey) => {
+    const voteOLD = async (index, proposalPubkey) => {
 
         const voterAddress = await getVoterAddress(proposalPubkey, wallet.publicKey)
 
@@ -111,20 +112,6 @@ export const AppProvider = ({ children }) => {
         return space;
     }
 
-    const loadSpaceProposals = async (spaceKey, proposalCount) => {
-
-        let tmpProposal;
-        let proposalList = [];
-
-        for (let i = 0; i < proposalCount; i++) {
-            const proposalPubKey = await getProposalAddress(spaceKey, i);
-            tmpProposal = await getProposal(proposalPubKey.toString());
-            tmpProposal.publicKey = proposalPubKey.toString();
-            proposalList.push(tmpProposal);
-        }
-        return proposalList        
-    };
-
     const createSpace = async (title, app) => {
         try {            
             const spacePublicKey = await getSpaceAddress(app.spaceCount);
@@ -170,35 +157,142 @@ export const AppProvider = ({ children }) => {
 
     // =============================================================================================
     // P R O P O S A L S ===========================================================================
-    const [proposals, setProposals] = useState([]);    
+    // const [proposals, setProposals] = useState([]);    
     const getProposals = async () => {
         const proposals = await program.account.proposal.all();
-        setProposals(proposals);
+        // setProposals(proposals);
+        return proposals;
     }
 
-    const getProposal = async (pubKey) => {        
-        return (
+    const getProposal = async (pubKey) => {       
+        console.log('get P:', pubKey)       
+        let p = (
             await program.account.proposal.fetch(pubKey)
-        )        
+        )
+        p.publicKey = pubKey;
+        
+        return p;
     }
+    
+    const createProposal = async (title, desc, options, deadline, space) => {
+        try {            
+            const propPublicKey = await getProposalAddress(space.publicKey, space.proposalCount);
 
+            if (!propPublicKey) {
+                console.error("propPublicKey is undefined");
+                return;
+            }
 
+            if (!space) {
+                console.error("space is undefined");
+                return;
+            }        
 
+            if (!space.publicKey) {
+                console.error("app.publicKey is undefined");
+                return;
+            }                           
 
-    const accounts = async () => {        
-        const account = await getProgramAccounts();                
+            if (!wallet || !wallet.publicKey) {
+                console.error("wallet or wallet.publicKey is undefined");
+                return;
+            }                        
+
+            options = JSON.stringify(options);
+            console.log("options", options);
+            const tx = await program.methods
+                .createProposal(new PublicKey(space.publicKey), title, desc, options, new BN(deadline))
+                .accounts({
+                    communitySpace: new PublicKey(space.publicKey), 
+                    proposal: new PublicKey(propPublicKey),  
+                    signer: wallet.publicKey,
+                    systemProgram: SystemProgram.programId
+                })
+                .signers([])
+                .rpc();
+
+            console.log("tx", tx)
+            await confirmTx(tx, connection)
+
+        } catch (error) {
+            console.error("Error in createProposal:", error);
+        }    
     };
+
+    const loadSpaceProposals = async (spaceKey, proposalCount) => {
+
+        let tmpProposal;
+        let proposalList = [];
+        console.log('space', spaceKey, proposalCount)
+        for (let i = 0; i < proposalCount; i++) {            
+            const proposalPubKey = await getProposalAddress(spaceKey, i);
+            console.log('P key:', proposalPubKey.toBase58(), i)
+            tmpProposal = await getProposal(proposalPubKey.toString());
+            tmpProposal.publicKey = proposalPubKey.toString();
+            console.log('tmpProposal', tmpProposal)
+            proposalList.push(tmpProposal);
+        }
+        return proposalList        
+    };
+    
+    // =============================================================================================
+    // V O T E S  ==================================================================================
+    const createVote = async (options, propPublicKey) => {
+        try {           
+            console.log('FirstLine') 
+            const votePublicKey = await getVoterAddress(propPublicKey, wallet.publicKey);
+            console.log('votePublicKey', votePublicKey)
+            if (!propPublicKey) {
+                console.error("propPublicKey is undefined");
+                return;
+            }
+                        
+            if (!wallet || !wallet.publicKey) {
+                console.error("wallet or wallet.publicKey is undefined");
+                return;
+            }                        
+
+            options = JSON.stringify(options);
+            console.log("options", options);
+
+            const tx = await program.methods
+                .castVote(options)
+                .accounts({
+                    vote: new PublicKey(votePublicKey), 
+                    proposal: new PublicKey(propPublicKey),  
+                    signer: wallet.publicKey,
+                    systemProgram: SystemProgram.programId
+                })
+                .signers([])
+                .rpc();
+
+            console.log("tx", tx)
+            await confirmTx(tx, connection)
+
+        } catch (error) {
+            console.error("Error in createVote:", error);
+        }    
+    };
+
+    // =============================================================================================
+    // const accounts = async () => {        
+    //     const account = await getProgramAccounts();                
+    // };
 
     return (
         <AppContext.Provider
             value={{
+                refresh,
+                setRefresh,
                 getApp,
                 createVote,                
-                vote,                
-                accounts,
-                proposals,
+                // vote,                
+                // accounts,
+                // proposals,
                 getProposal,
+                // getProposals,
                 loadSpaceProposals,
+                createProposal,
                 createSpace,
                 // spaces,
                 getSpaces,
