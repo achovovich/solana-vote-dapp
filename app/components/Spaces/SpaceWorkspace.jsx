@@ -8,6 +8,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 import PageTitle from "@/components/PageTitle"
 import SpacesList from '@/components/Spaces/List';
 import SpaceAdd from '@/components/Cards/SpaceAdd';
+import LiquidBreadcrumb from '@/components/Header/Breadcrump';
 
 export default function SpaceWorkSpace() {
 
@@ -33,9 +34,10 @@ export default function SpaceWorkSpace() {
 
     return (
         <div >
-            <SpaceAdd app={app} />
-            <SpacesList app={app} />
-            
+            <LiquidBreadcrumb className="my-4 p-2" />
+            <SpaceAdd app={app} className="my-2" />
+            <SpacesList app={app} className="my-2" />
+
         </div>
     );
 };

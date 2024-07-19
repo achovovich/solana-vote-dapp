@@ -38,7 +38,7 @@ export default function VoteAdd({ proposal }) {
         if (sum > 100) {
             setTotalVote(0)
             setProgressColor('text-red-600')
-            setError('Votre participation est top importante : ' + sum + '%')
+            setError('Votre participation est trop importante : ' + sum + '%')
             setProgressValue(100)
         } else {
             setTotalVote(sum)
@@ -71,7 +71,7 @@ export default function VoteAdd({ proposal }) {
     return (
         <Card className="w-[500px]">
             <CustomCardHeader
-                title={"Repartissez votre vote sur les options suivante"}
+                title={"Repartissez votre vote sur les options suivantes"}
                 description={'Vous ne pouvez pas dépasser un total de 100%'}>
             </CustomCardHeader>
 
