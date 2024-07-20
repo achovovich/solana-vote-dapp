@@ -12,19 +12,15 @@ import CustomCardHeader from "./CardHeader"
 
 export default function ProposalAdd({ space }) {
 
-
     const currentTimestamp = new Date().getTime() / 1000;
     const durationInSeconds = parseInt(1) * 24 * 60 * 60;
     const d = parseInt(currentTimestamp + durationInSeconds);
-    // const o = 'option1, option2, option3, option4, option5';
-    // const optionsArray = o.split(',').map(option => option.trim());
-    // console.log("optionsArray", optionsArray);
 
-    const { createProposal } = useAppContext();
+    const { createProposal, setRefresh } = useAppContext();
 
     const [title, setTitle] = useState('titre');
     const [desc, setDesc] = useState('desc');
-    const [options, setOptions] = useState(['option1', 'option2', 'option3', 'option4', 'option5']);//useState(Array(5).fill(''));
+    const [options, setOptions] = useState(Array(5).fill(''));
     const [deadline, setDeadline] = useState(d);
 
     const handleOptionChange = (value, index) => {
@@ -37,11 +33,15 @@ export default function ProposalAdd({ space }) {
 
         const currentTimestamp = new Date().getTime() / 1000;
         const durationInSeconds = parseInt(deadline) * 24 * 60 * 60;
-        console.log(currentTimestamp, durationInSeconds)
+
         let d = parseInt(currentTimestamp + durationInSeconds);
         d = Number(deadline) || 0;
 
         let p = await createProposal(title, desc, options, d, space);
+        console.log('p', p);
+        console.log('refresh')
+        setRefresh(true);
+        console.log('refresh2')
     }
 
     return (
@@ -49,7 +49,7 @@ export default function ProposalAdd({ space }) {
             <CustomCardHeader title={"Créez un vote"} description={''}></CustomCardHeader>
 
             <CardContent>
-                <form  > {/* onSubmit={handleSubmit(onSubmit2)} */}
+                <form  >
                     <div className="grid w-full items-center gap-4">
                         <div className="flex flex-col space-y-1.5">
                             <Label htmlFor="name">Titre du vote</Label>
@@ -68,7 +68,7 @@ export default function ProposalAdd({ space }) {
                                     <Label htmlFor={`option-${i}`} className="my-2">Option {i + 1}</Label>
                                     <Input
                                         id={`option-${i}`}
-                                        placeholder={`Option ${i + 1}`}
+                                        // placeholder={`Option ${i + 1}`}
                                         value={option}
                                         onChange={(e) => handleOptionChange(e.target.value, i)}
                                         tabIndex="{i+4}"

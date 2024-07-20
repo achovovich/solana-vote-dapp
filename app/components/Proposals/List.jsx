@@ -5,22 +5,11 @@ import { useAppContext } from "../../context/context";
 import Link from 'next/link';
 import ListPaginate from "@/components/ListPaginate"
 import { getProposalAddress } from "../../utils/program";
-import { BarChartIcon, ArrowTopRightIcon } from '@radix-ui/react-icons'
+import { BarChartIcon, ArrowTopRightIcon, RowsIcon } from '@radix-ui/react-icons'
 import PageTitle from "@/components/PageTitle"
-import { Label } from "@/components/ui/label"
-import { Switch } from "@/components/ui/switch"
 import { Skeleton } from "@/components/ui/skeleton"
 
-import {
-    Table,
-    TableBody,
-    TableCaption,
-    TableCell,
-    TableFooter,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from "@/components/ui/table"
+import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 
 export default function ProposalList({ space }) {
 
@@ -29,16 +18,21 @@ export default function ProposalList({ space }) {
     let spaceKey = space.publicKey;
     let proposalCount = space.proposalCount;
 
-    const { loadSpaceProposals } = useAppContext();
+    const { loadSpaceProposals, refresh, setRefresh } = useAppContext();
     const [spaceProposals, setSpaceProposals] = useState();
 
-    console.log('space', space)
-
-    let proposalList = [];
     const load = async () => {
+        let proposalList = [];
         proposalList = await loadSpaceProposals(spaceKey, proposalCount)
         setSpaceProposals(proposalList);
     };
+
+    useEffect(() => {
+        if (refresh) {
+            load();
+        }
+        setRefresh(false);
+    }, [refresh]);
 
     if (!spaceProposals) {
         load();
@@ -53,15 +47,16 @@ export default function ProposalList({ space }) {
                 </div>
             ) : (
                 <div >
-                    <div className='flex justify-between items-center'>
+                    <div className='flex items-center '>
+                        <RowsIcon className="text-purple-600 mr-2" />
                         <h2>Liste des votes disponible</h2>
                     </div>
-                    <Table>
+                    <Table className="border-purple-100 border-2">
                         <TableCaption></TableCaption>
                         <TableHeader>
                             <TableRow>
-                                <TableHead className="w-[300px]">Titre</TableHead>
-                                <TableHead className="text-right">Actions</TableHead>
+                                <TableHead className="w-[300px] text-purple-400">Titre</TableHead>
+                                <TableHead className="text-right text-purple-400">Actions</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -69,7 +64,7 @@ export default function ProposalList({ space }) {
                                 <TableRow key={proposal.publicKey}>
                                     <TableCell className="font-medium">{proposal.title}</TableCell>
                                     <TableCell className="text-right flex flex-row-reverse items-center justify-between">
-                                        <Link href={"/proposals/" + proposal.publicKey}><ArrowTopRightIcon className='text-purple-400' /></Link>
+                                        <Link href={"/proposals/" + proposal.publicKey}><ArrowTopRightIcon className='text-purple-600' /></Link>
                                     </TableCell>
                                 </TableRow>
                             ))}

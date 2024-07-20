@@ -5,6 +5,7 @@ import { getProposalAddress } from "../../utils/program";
 import { Skeleton } from "@/components/ui/skeleton"
 import PageTitle from "@/components/PageTitle"
 import VoteAdd from "@/components/Cards/VoteAdd";
+import { EnvelopeClosedIcon } from '@radix-ui/react-icons'
 
 
 export default function Proposal({ proposalKey }) {
@@ -54,8 +55,11 @@ export default function Proposal({ proposalKey }) {
                 </div>
             ) : (
                 <div >
-                    <PageTitle text={"Vote " + proposal.title} />
-                    <h2>{proposal.description}</h2>
+                    <div className="flex items-center ">
+                        <EnvelopeClosedIcon className="text-purple-600 mr-2" />
+                        <PageTitle text={"Vote " + proposal.title} />
+                    </div>
+                    <h2 className="pl-6">{proposal.description}</h2>
                     <VoteAdd proposal={proposal} />
                 </div>
             )}

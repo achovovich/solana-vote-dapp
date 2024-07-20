@@ -29,7 +29,7 @@ export default function SpaceAdd({ app }) {
             <CustomCardHeader title={"Créez un espace de vote"} description={''}></CustomCardHeader>
 
             <CardContent>
-                <form  > {/* onSubmit={handleSubmit(onSubmit2)} */}
+                <form  >
                     <div className="grid w-full items-center gap-4">
                         <div className="flex flex-col space-y-1.5">
                             <Label htmlFor="name">Nom de l'espace</Label>

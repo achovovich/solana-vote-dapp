@@ -6,6 +6,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 import ProposalList from "../Proposals/List";
 import PageTitle from "@/components/PageTitle"
 import ProposalAdd from '@/components/Cards/ProposalAdd';
+import { BoxModelIcon } from '@radix-ui/react-icons'
 
 export default function Space({ spaceKey }) {
 
@@ -31,7 +32,9 @@ export default function Space({ spaceKey }) {
                 </div>
             ) : (
                 <div >
-                    <PageTitle text={"Bienvenue dans l'espace " + space.name} />
+                    <div className="flex items-center ">
+                        <PageTitle text={"Bienvenue dans l'espace " + space.name} />
+                    </div>
                     <ProposalList space={space} />
                     <ProposalAdd space={space} />
                 </div>

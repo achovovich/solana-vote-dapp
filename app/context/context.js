@@ -198,8 +198,6 @@ export const AppProvider = ({ children }) => {
                 return;
             }                        
 
-            options = JSON.stringify(options);
-            console.log("options", options);
             const tx = await program.methods
                 .createProposal(new PublicKey(space.publicKey), title, desc, options, new BN(deadline))
                 .accounts({
