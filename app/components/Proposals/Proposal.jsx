@@ -5,6 +5,7 @@ import { getProposalAddress } from "../../utils/program";
 import { Skeleton } from "@/components/ui/skeleton"
 import PageTitle from "@/components/PageTitle"
 import VoteAdd from "@/components/Cards/VoteAdd";
+import UserVote from "@/components/Cards/UserVote";
 import { EnvelopeClosedIcon } from '@radix-ui/react-icons'
 
 
@@ -61,6 +62,7 @@ export default function Proposal({ proposalKey }) {
                     </div>
                     <h2 className="pl-6">{proposal.description}</h2>
                     <VoteAdd proposal={proposal} />
+                    <UserVote proposal={proposal} />
                 </div>
             )}
         </>

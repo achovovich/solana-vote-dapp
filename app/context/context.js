@@ -236,8 +236,7 @@ export const AppProvider = ({ children }) => {
     // =============================================================================================
     // V O T E S  ==================================================================================
     const createVote = async (options, propPublicKey) => {
-        try {           
-            console.log('FirstLine') 
+        try {                       
             const votePublicKey = await getVoterAddress(propPublicKey, wallet.publicKey);
             console.log('votePublicKey', votePublicKey)
             if (!propPublicKey) {
@@ -248,13 +247,10 @@ export const AppProvider = ({ children }) => {
             if (!wallet || !wallet.publicKey) {
                 console.error("wallet or wallet.publicKey is undefined");
                 return;
-            }                        
-
-            options = JSON.stringify(options);
-            console.log("options", options);
+            }                                        
 
             const tx = await program.methods
-                .castVote(options)
+                .castVote(options)                
                 .accounts({
                     vote: new PublicKey(votePublicKey), 
                     proposal: new PublicKey(propPublicKey),  

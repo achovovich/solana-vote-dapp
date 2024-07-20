@@ -2,7 +2,7 @@
 
 import React, { useState, useCallback, useEffect } from "react"
 import { useAppContext } from "../../context/context";
-import { debounce } from 'lodash';
+import { struct, u8, u16 } from '@solana/buffer-layout';
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, } from "@/components/ui/card"
@@ -49,6 +49,35 @@ export default function VoteAdd({ proposal }) {
 
     }, [vote]);
 
+    const HasVotedForLayout = struct([
+        u8('index'),
+        u16('ratio'),
+    ]);
+
+    const serializeOptions = (options) => {
+        let o = []
+
+        const bufferSize = options.length * HasVotedForLayout.span;
+        let buffer = Buffer.alloc(bufferSize);
+        let offset = 0;
+        let v;
+
+
+        // Sérialisation de chaque option
+        const bufferHasVotedFor = Buffer.alloc(HasVotedForLayout.span);
+        options.forEach(option => {
+            // HasVotedForLayout.encode(option, buffer, offset);
+            HasVotedForLayout.encode(option, buffer);
+            offset += HasVotedForLayout.span;
+            // v = HasVotedForLayout.fromArray(option);
+            console.log('HasVotedForLayout', HasVotedForLayout)
+            o.push(HasVotedForLayout)
+
+        });
+        return o;
+        return buffer;
+    }
+
     const saveVote = async () => {
         console.log('total', totalVote)
         if (totalVote > 100) {
@@ -64,8 +93,11 @@ export default function VoteAdd({ proposal }) {
         })
             .filter(vote => vote !== null);
 
+        const serializedOptions = serializeOptions(structuredVotes);
+
         console.log('options : ', structuredVotes)
-        let v = await createVote(structuredVotes, proposal.publicKey);
+        console.log('serializedOptions : ', serializedOptions)
+        let v = await createVote(serializedOptions, proposal.publicKey);
     }
 
     return (
@@ -103,7 +135,7 @@ export default function VoteAdd({ proposal }) {
                 </form>
             </CardContent>
             <CardFooter className="flex justify-between flex-row-reverse">
-                <Button onClick={saveVote}>Creer</Button>
+                <Button onClick={saveVote}>Voter</Button>
             </CardFooter>
 
         </Card>
