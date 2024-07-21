@@ -201,7 +201,9 @@ export const AppProvider = ({ children }) => {
 
         } catch (error) {
             console.error("Error in createVote:", error);
-        }    
+            return 'Erreur lors de la création du vote';
+        }
+        return '';    
     };
 
     // =============================================================================================

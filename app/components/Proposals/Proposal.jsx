@@ -27,8 +27,6 @@ export default function Proposal({ proposalKey }) {
     const loadProposal = async () => {
 
         const p = await getProposal(proposalKey);
-        console.log('proposalKey', proposalKey);
-        console.log('proposal', p);
         setProposal(p);
 
         options = p.options;

@@ -17,7 +17,7 @@ export const getVoterAddress = async (votePublicKey, userPublicKey) => {
     votePublicKey = new PublicKey(votePublicKey);
     return (
         await PublicKey.findProgramAddressSync(
-            [votePublicKey.toBuffer(), userPublicKey.toBuffer()],
+            [Buffer.from("vote"), votePublicKey.toBuffer(), userPublicKey.toBuffer()],
             PROGRAM_ID
         )
     )[0];

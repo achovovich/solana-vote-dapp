@@ -2,7 +2,6 @@
 
 import React, { useState, useCallback, useEffect } from "react"
 import { useAppContext } from "../../context/context";
-import { struct, u8, u16 } from '@solana/buffer-layout';
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, } from "@/components/ui/card"
@@ -20,8 +19,9 @@ export default function VoteAdd({ proposal }) {
     const [progressValue, setProgressValue] = useState(0);
     const [progressColor, setProgressColor] = useState();
     const [error, setError] = useState('');
+    const [errorSubmit, setErrorSubmit] = useState('');
     const [totalVote, setTotalVote] = useState(0);
-    const [vote, setVote] = useState(Array(5).fill(''));
+    const [vote, setVote] = useState(Array(options.length).fill(''));
 
     const handleVoteChange = (value, index) => {
         const updatedVote = [...vote];
@@ -49,55 +49,16 @@ export default function VoteAdd({ proposal }) {
 
     }, [vote]);
 
-    const HasVotedForLayout = struct([
-        u8('index'),
-        u16('ratio'),
-    ]);
-
-    const serializeOptions = (options) => {
-        let o = []
-
-        const bufferSize = options.length * HasVotedForLayout.span;
-        let buffer = Buffer.alloc(bufferSize);
-        let offset = 0;
-        let v;
-
-
-        // Sérialisation de chaque option
-        const bufferHasVotedFor = Buffer.alloc(HasVotedForLayout.span);
-        options.forEach(option => {
-            // HasVotedForLayout.encode(option, buffer, offset);
-            HasVotedForLayout.encode(option, buffer);
-            offset += HasVotedForLayout.span;
-            // v = HasVotedForLayout.fromArray(option);
-            console.log('HasVotedForLayout', HasVotedForLayout)
-            o.push(HasVotedForLayout)
-
-        });
-        return o;
-        return buffer;
-    }
-
     const saveVote = async () => {
-        console.log('total', totalVote)
+
         if (totalVote > 100) {
             setError('votre participation doit etre de 100%')
             return
         }
 
-        const structuredVotes = vote.map((value, index) => {
-            if (value !== '') {
-                return { index, ratio: parseInt(value, 10) };
-            }
-            return null;
-        })
-            .filter(vote => vote !== null);
-
-        const serializedOptions = serializeOptions(structuredVotes);
-
-        console.log('options : ', structuredVotes)
-        console.log('serializedOptions : ', serializedOptions)
-        let v = await createVote(serializedOptions, proposal.publicKey);
+        const checkedVote = vote.map(item => item === '' ? 0 : item);
+        let e = await createVote(checkedVote, proposal.publicKey);
+        setErrorSubmit(e);
     }
 
     return (
@@ -108,6 +69,7 @@ export default function VoteAdd({ proposal }) {
             </CustomCardHeader>
 
             <CardContent>
+                <h3 className="text-red-600 mb-2">{errorSubmit}</h3>
                 <span className={progressColor}>{error}</span>
                 <h3>Progression de votre participation</h3>
                 <Progress value={progressValue} className="bg-cyan-200" />
