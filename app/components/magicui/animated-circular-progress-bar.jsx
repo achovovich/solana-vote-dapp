@@ -10,7 +10,7 @@ export default function AnimatedCircularProgressBar({
 }) {
   const circumference = 2 * Math.PI * 45;
   const percentPx = circumference / 100;
-  const currentPercent = ((value - min) / (max - min)) * 100;
+  const currentPercent = Math.round(((value - min) / (max - min)) * 100 * 100) / 100;
 
   return (
     (<div
@@ -90,9 +90,10 @@ export default function AnimatedCircularProgressBar({
           } />
       </svg>
       <span
+        style={{ color: gaugePrimaryColor }}
         data-current-value={currentPercent}
         className="duration-[var(--transition-length)] delay-[var(--delay)] absolute inset-0 m-auto size-fit ease-linear animate-in fade-in">
-        {currentPercent}
+        {currentPercent} %
       </span>
     </div>)
   );

@@ -24,7 +24,7 @@ export default function Header() {
                 {/* <Nav /> */}
             </div>
             <div className='flex flex-row items-center'>
-                <Balance />
+                {/* <Balance /> */}
                 {/* <WalletMultiButton /> */}
             </div>
         </div >

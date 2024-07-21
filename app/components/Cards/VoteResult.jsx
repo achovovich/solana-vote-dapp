@@ -1,12 +1,8 @@
 "use client";
 
-import React, { useState, useCallback, useEffect } from "react"
-import { useAppContext } from "../../context/context";
-import { struct, u8, u16 } from '@solana/buffer-layout';
+import React from "react"
 
-import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import CustomCardHeader from "./CardHeader"
 
@@ -16,50 +12,60 @@ import AnimatedCircularProgressBar from "@/components/magicui/animated-circular-
 export default function VoteResult({ proposal }) {
 
     let options = proposal.options
+    console.log(proposal)
 
-    const { createVote } = useAppContext();
+    const sum = options.reduce((acc, current) => {
+        const value = Number(current.count) || 0;
+        return acc + value;
+    }, 0);
 
     return (
         <Card className="w-[500px]">
             <CustomCardHeader
                 title={"Résultats"}
-                description={'Participations : 53 utilisateurs'}>
+                description={'Participations : ' + proposal.voteCount + ' utilisateurs'}>
             </CustomCardHeader>
+            {proposal.voteCount > 0 ? (
+                <>
+                    <CardContent>
+                        <h3>Ce vote a reçu un total de {Math.round(sum / 100 * 10) / 10} votes</h3>
+                        <h3>Les utilisateurs ont utilisés en moyenne {Math.round(sum / proposal.voteCount * 100) / 100}% de leur voix</h3>
+                        <form className="mt-5">
+                            <div className="grid w-full items-center gap-4">
+                                <div className="flex flex-col space-y-1.5">
 
-            <CardContent>
+                                    {options.map((option, i) => (
 
-                <form  >
-                    <div className="grid w-full items-center gap-4">
-                        <div className="flex flex-col space-y-1.5">
+                                        <div key={i} className="">
 
-                            {options.map((option, i) => (
-                                <div key={i} className="mb-10">
-
-                                    <Label htmlFor={`option-${i}`} className="text-l  border-b-2 border-cyan-600">{option.label + ' ' + ((i + 1) * 15)}%</Label>
-                                    <div className="flex">
-                                        <AnimatedCircularProgressBar
-                                            max={"100"}
-                                            min={0}
-                                            value={(i + 1) * 15}
-                                            gaugePrimaryColor="#6d28d9"//"rgb(79 70 229)"
-                                            gaugeSecondaryColor="#67e8f9"//"rgba(0, 0, 0, 0.1)"
-                                        />
-                                        <div>
-                                            Stats ...
+                                            <div className="flex my-5">
+                                                <AnimatedCircularProgressBar
+                                                    max={sum}
+                                                    min={0}
+                                                    value={option.count}
+                                                    gaugePrimaryColor="#6d28d9"//"rgb(79 70 229)"
+                                                    gaugeSecondaryColor="#67e8f9"//"rgba(0, 0, 0, 0.1)"
+                                                />
+                                                <div>
+                                                    <Label htmlFor={`option-${i}`} className="text-xl  border-b-2 border-cyan-600">
+                                                        {option.label + ' ' + Math.round(option.count / proposal.voteCount * 100) / 100}%
+                                                    </Label>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
+                                    ))}
+
                                 </div>
-                            ))}
 
-                        </div>
+                            </div>
+                        </form>
+                    </CardContent>
+                    <CardFooter className="flex justify-between flex-row-reverse">
 
-                    </div>
-                </form>
-            </CardContent>
-            <CardFooter className="flex justify-between flex-row-reverse">
+                    </CardFooter>
+                </>
+            ) : (<div className="text-center p-4">Aucune participation</div>)}
 
-            </CardFooter>
-
-        </Card>
+        </Card >
     )
 }

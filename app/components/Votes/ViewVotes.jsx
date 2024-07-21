@@ -3,8 +3,6 @@ import Link from 'next/link';
 import ListPaginate from "@/components/ListPaginate"
 import { BarChartIcon, ArrowTopRightIcon } from '@radix-ui/react-icons'
 import PageTitle from "@/components/PageTitle"
-import { Label } from "@/components/ui/label"
-import { Switch } from "@/components/ui/switch"
 
 import {
     Table,

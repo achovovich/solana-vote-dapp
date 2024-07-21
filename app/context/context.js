@@ -102,10 +102,12 @@ export const AppProvider = ({ children }) => {
     }
 
     const getProposal = async (pubKey) => {                    
+        if (!pubKey) {return;}
+        
         let p = (
             await program.account.proposal.fetch(pubKey)
         )
-        p.publicKey = pubKey;
+        if (p) { p.publicKey = pubKey; }
         
         return p;
     }
@@ -159,7 +161,7 @@ export const AppProvider = ({ children }) => {
 
         let tmpProposal;
         let proposalList = [];
-        console.log('space', spaceKey, proposalCount)
+        
         for (let i = 0; i < proposalCount; i++) {            
             const proposalPubKey = await getProposalAddress(spaceKey, i);            
             tmpProposal = await getProposal(proposalPubKey.toString());
@@ -171,6 +173,18 @@ export const AppProvider = ({ children }) => {
     
     // =============================================================================================
     // V O T E S  ==================================================================================
+    const getUserVote = async (propPublicKey) => { 
+        let pk = new PublicKey(propPublicKey);  
+        const votePublicKey = await getVoterAddress(pk, wallet.publicKey);           
+        
+        let v = (
+            await program.account.vote.fetch(votePublicKey)
+        )
+        v.publicKey = votePublicKey;
+        
+        return v;
+    }
+
     const createVote = async (options, propPublicKey) => {
         try {                       
             const votePublicKey = await getVoterAddress(propPublicKey, wallet.publicKey);
@@ -217,16 +231,12 @@ export const AppProvider = ({ children }) => {
                 refresh,
                 setRefresh,
                 getApp,
-                createVote,                
-                // vote,                
-                // accounts,
-                // proposals,
-                getProposal,
-                // getProposals,
+                createVote,
+                getUserVote,
+                getProposal,                
                 loadSpaceProposals,
                 createProposal,
-                createSpace,
-                // spaces,
+                createSpace,                
                 getSpaces,
                 getSpace,
                 program,
