@@ -1,13 +1,11 @@
 use anchor_lang::prelude::*;
 
-declare_id!("G2QUq2BW1CJ8UDxm7RGQ9CWYNEJtTrPcL1gtNshgcmzv");
+declare_id!("G49wmLKgB6ChgbCi8wyzT93s4PL6ApY1qYs2HZGuY4J3");
 
 pub mod constants;
 pub mod errors;
 pub mod instructions;
 pub mod state;
-
-use crate::state::HasVotedFor;
 
 use instructions::*;
 
@@ -34,7 +32,7 @@ mod solvote {
         instructions::create_proposal(ctx, space_key, title, description, options, deadline)
     }
 
-    pub fn cast_vote(ctx: Context<CastVote>, options: Vec<HasVotedFor>) -> Result<()> {
+    pub fn cast_vote(ctx: Context<CastVote>, options: Vec<u16>) -> Result<()> {
         instructions::cast_vote(ctx, options)
     }
 

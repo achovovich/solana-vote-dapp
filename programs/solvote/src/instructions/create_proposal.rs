@@ -2,7 +2,7 @@ use anchor_lang::prelude::*;
 use crate::constants::MAX_PROPOSAL_OPTIONS;
 use crate::errors::VoteError;
 
-use crate::state::{CommunitySpace, VoteOption, Proposal};
+use crate::state::{CommunitySpace, Proposal, VoteOption};
 
 pub fn create_proposal(
     ctx: Context<CreateProposal>,
@@ -17,7 +17,7 @@ pub fn create_proposal(
 
     space_account.proposal_count += 1;
 
-   // check if the number of options are in the limit range. 
+    // check if the number of options are in the limit range.
     require!(
         options.len() <= MAX_PROPOSAL_OPTIONS,
         VoteError::ProposalOptionsExceeded
@@ -27,6 +27,7 @@ pub fn create_proposal(
     proposal_account.title = title;
     proposal_account.description = description;
     proposal_account.deadline = deadline;
+    proposal_account.vote_count = 0;
 
     let mut vec_options = Vec::new();
 
@@ -51,7 +52,7 @@ pub struct CreateProposal<'info> {
     #[account(
         init,
         payer = signer,
-        space = 8 + 32  + 32 + 32 + 32 + (32 + 8) * MAX_PROPOSAL_OPTIONS + 64,
+        space = 8 + 32  + 32 + 32 + 4 + (32 + 4) * MAX_PROPOSAL_OPTIONS + 8 + 4,
         seeds = [b"proposal".as_ref(), &(community_space.proposal_count+1).to_le_bytes()],
         bump
     )]

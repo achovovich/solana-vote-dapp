@@ -7,6 +7,7 @@ pub struct Proposal {
     pub description: String,
     pub options: Vec<VoteOption>,
     pub deadline: u64,
+    pub vote_count: u32,
 }
 
 #[derive(AnchorSerialize, AnchorDeserialize, Clone)]
