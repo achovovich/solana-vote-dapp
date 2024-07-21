@@ -34,9 +34,10 @@ export default function SpaceWorkSpace() {
 
     return (
         <div >
-            <LiquidBreadcrumb className="my-4 p-2" />
-            <SpaceAdd app={app} className="my-2" />
+            <LiquidBreadcrumb className="my-4 p-2 mb-5" />
             <SpacesList app={app} className="my-2" />
+            <SpaceAdd app={app} className="my-2" />
+
 
         </div>
     );

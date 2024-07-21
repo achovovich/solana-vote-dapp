@@ -21,7 +21,6 @@ export default function SpaceAdd({ app }) {
         let index = app.spaceCount;
         let s = await createSpace(spaceName, app);
         setRefresh(true);
-
     }
 
     return (

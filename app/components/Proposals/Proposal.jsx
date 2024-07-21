@@ -6,6 +6,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 import PageTitle from "@/components/PageTitle"
 import VoteAdd from "@/components/Cards/VoteAdd";
 import UserVote from "@/components/Cards/UserVote";
+import VoteResult from "@/components/Cards/VoteResult";
 import { EnvelopeClosedIcon } from '@radix-ui/react-icons'
 
 
@@ -15,6 +16,13 @@ export default function Proposal({ proposalKey }) {
     const [proposal, setProposal] = useState(null);
 
     let options = [];
+
+    const isOpen = (proposal) => {
+        const deadline = proposal.deadline.toString() * 1000;
+        const now = new Date().getTime();
+        const diff = deadline - now;
+        return diff > 0 ? true : false;
+    }
 
     const loadProposal = async () => {
 
@@ -61,8 +69,16 @@ export default function Proposal({ proposalKey }) {
                         <PageTitle text={"Vote " + proposal.title} />
                     </div>
                     <h2 className="pl-6">{proposal.description}</h2>
-                    <VoteAdd proposal={proposal} />
-                    <UserVote proposal={proposal} />
+                    <>
+                        {isOpen(proposal) ? (
+                            <>
+                                <VoteAdd proposal={proposal} />
+                                <UserVote proposal={proposal} />
+                            </>
+                        ) : (
+                            <VoteResult proposal={proposal} />
+                        )}
+                    </>
                 </div>
             )}
         </>

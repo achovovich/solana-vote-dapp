@@ -5,9 +5,9 @@ import { useAppContext } from "../../context/context";
 
 import Link from 'next/link';
 import ListPaginate from "@/components/ListPaginate"
-import { ArrowTopRightIcon } from '@radix-ui/react-icons'
 import PageTitle from "@/components/PageTitle"
 import { Skeleton } from "@/components/ui/skeleton"
+import { ArrowTopRightIcon, RowsIcon } from '@radix-ui/react-icons'
 
 import { Table, TableBody, TableCaption, TableCell, TableFooter, TableHead, TableHeader, TableRow, }
     from "@/components/ui/table"
@@ -24,15 +24,16 @@ export default function SpacesList({ app }) {
 
     useEffect(() => {
         if (refresh) {
-            load();        
+            load();
         }
-        setRefresh(false);    
-    },[refresh]);  
+        setRefresh(false);
+    }, [refresh]);
 
     if (!spaces) {
         load();
         return (
             <div>
+                <PageTitle text={"Chargement..."} />
                 <Skeleton className="w-[100px] h-[20px] rounded-full" />
             </div>
         );
@@ -40,15 +41,16 @@ export default function SpacesList({ app }) {
 
     return (
         <div >
-            <div className='flex justify-between items-center'>
-                <PageTitle text={"Liste des espaces de votes"} className />
+            <div className='flex items-center my-5'>
+                <RowsIcon className="text-purple-600 mr-2" />
+                <PageTitle text={"Liste des espaces de votes"} />
             </div>
-            <Table>
+            <Table className="border-purple-100 border-2">
                 <TableCaption></TableCaption>
                 <TableHeader>
                     <TableRow>
-                        <TableHead className="w-[300px]">Titre</TableHead>
-                        <TableHead className="text-right">Actions</TableHead>
+                        <TableHead className="w-[300px] text-purple-400">Titre</TableHead>
+                        <TableHead className="text-right text-purple-400">Actions</TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>

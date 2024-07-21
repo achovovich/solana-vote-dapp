@@ -8,20 +8,24 @@ import { Card, CardContent, CardFooter, } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import CustomCardHeader from "./CardHeader"
+import { set } from "lodash";
 
 
 export default function ProposalAdd({ space }) {
 
+    //DEBUG
     const currentTimestamp = new Date().getTime() / 1000;
     const durationInSeconds = parseInt(1) * 24 * 60 * 60;
     const d = parseInt(currentTimestamp + durationInSeconds);
+    //END DEBUG
 
     const { createProposal, setRefresh } = useAppContext();
 
-    const [title, setTitle] = useState('titre');
-    const [desc, setDesc] = useState('desc');
+    const [title, setTitle] = useState('');
+    const [desc, setDesc] = useState('');
     const [options, setOptions] = useState(Array(5).fill(''));
-    const [deadline, setDeadline] = useState(d);
+    const [deadline, setDeadline] = useState();
+    const [error, setError] = useState('');
 
     const handleOptionChange = (value, index) => {
         const updatedOptions = [...options];
@@ -31,17 +35,21 @@ export default function ProposalAdd({ space }) {
 
     const saveProposal = async () => {
 
+        setError('');
         const currentTimestamp = new Date().getTime() / 1000;
         const durationInSeconds = parseInt(deadline) * 24 * 60 * 60;
 
-        let d = parseInt(currentTimestamp + durationInSeconds);
-        d = Number(deadline) || 0;
+        if (!durationInSeconds || durationInSeconds < 1) {
+            setError('La durée du vote doit être d\'au moins 1 jour');
+            return false;
+        }
 
-        let p = await createProposal(title, desc, options, d, space);
-        console.log('p', p);
-        console.log('refresh')
+        let d = parseInt(currentTimestamp + durationInSeconds);
+        const filteredOptions = options.filter(option => option !== null && option !== undefined && option !== '');
+
+        const errorMessage = await createProposal(title, desc, filteredOptions, d, space);
+        setError(errorMessage);
         setRefresh(true);
-        console.log('refresh2')
     }
 
     return (
@@ -49,6 +57,7 @@ export default function ProposalAdd({ space }) {
             <CustomCardHeader title={"Créez un vote"} description={''}></CustomCardHeader>
 
             <CardContent>
+                <h3 className="text-red-600 mb-2">{error}</h3>
                 <form  >
                     <div className="grid w-full items-center gap-4">
                         <div className="flex flex-col space-y-1.5">
@@ -60,7 +69,7 @@ export default function ProposalAdd({ space }) {
                             <Input id="desc" placeholder="Saisissez ici les informations sur le vote" onChange={(e) => setDesc(e.target.value)} tabIndex="1" />
                             {/* {errors.name && <span> ... required</span>} */}
 
-                            <Label htmlFor="deadline">Durée du vote (en jours)</Label>
+                            <Label htmlFor="deadline" >Durée du vote (en jours)</Label>
                             <Input id="deadline" placeholder="" onChange={(e) => setDeadline(e.target.value)} tabIndex="2" />
                             {/* {errors.name && <span> ... required</span>} */}
                             {options.map((option, i) => (

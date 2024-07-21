@@ -24,69 +24,6 @@ export const AppProvider = ({ children }) => {
     }, [connection, wallet]);
 
 
-
-    const createVoteOLD = async (title, description, optionsArray, deadline) => {
-
-        const proposalKeypair = Keypair.generate();
-        const tx = await program.methods
-            .createProposal(title, description, optionsArray, new BN(deadline))
-            .accounts({
-                signer: wallet.publicKey,
-                proposal: proposalKeypair.publicKey,
-                systemProgram: SystemProgram.programId
-            })
-            .signers([proposalKeypair])
-            .rpc();
-
-        console.log("tx", tx)
-        await confirmTx(tx, connection)
-        viewVotes();
-
-    };
-
-    const voteOLD = async (index, proposalPubkey) => {
-
-        const voterAddress = await getVoterAddress(proposalPubkey, wallet.publicKey)
-
-        const tx = await program.methods
-            .vote(index)
-            .accounts({
-                signer: wallet.publicKey,
-                proposal: proposalPubkey,
-                voter: voterAddress,
-                systemProgram: SystemProgram.programId
-            })
-            .rpc();
-
-        console.log("tx", tx)
-        await confirmTx(tx, connection)
-        viewVotes();
-    };
-
-    // TODO BONUS nouvelle fonctionnalité
-    // Récupérer si l'utilisateur a déjà voté pour l'afficher à côté de l'option correspondante
-    // Indice 1 : Faire un appel au smart contract pour récupérer le Voter account s'il existe (publickey généré avec la seed voteAccount + userWallet)
-
-
-
-
-
-
-
-
-    
-    // useEffect(() => {
-
-        // if (proposals.length == 0) {
-        //     // getProposals();
-        // }
-
-        // if (spaces.length == 0) {            
-        //     viewSpaces();            
-        // }        
-
-    // }, [program]);
-
     // =============================================================================================
     // A P P  ======================================================================================
     const getApp = async (key) => {        
@@ -164,8 +101,7 @@ export const AppProvider = ({ children }) => {
         return proposals;
     }
 
-    const getProposal = async (pubKey) => {       
-        console.log('get P:', pubKey)       
+    const getProposal = async (pubKey) => {                    
         let p = (
             await program.account.proposal.fetch(pubKey)
         )
@@ -214,7 +150,9 @@ export const AppProvider = ({ children }) => {
 
         } catch (error) {
             console.error("Error in createProposal:", error);
-        }    
+            return 'Erreur lors de la création du vote';
+        }
+        return '';    
     };
 
     const loadSpaceProposals = async (spaceKey, proposalCount) => {
@@ -223,11 +161,9 @@ export const AppProvider = ({ children }) => {
         let proposalList = [];
         console.log('space', spaceKey, proposalCount)
         for (let i = 0; i < proposalCount; i++) {            
-            const proposalPubKey = await getProposalAddress(spaceKey, i);
-            console.log('P key:', proposalPubKey.toBase58(), i)
+            const proposalPubKey = await getProposalAddress(spaceKey, i);            
             tmpProposal = await getProposal(proposalPubKey.toString());
-            tmpProposal.publicKey = proposalPubKey.toString();
-            console.log('tmpProposal', tmpProposal)
+            tmpProposal.publicKey = proposalPubKey.toString();            
             proposalList.push(tmpProposal);
         }
         return proposalList        
