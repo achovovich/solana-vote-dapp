@@ -1,6 +1,6 @@
-use anchor_lang::prelude::*;
 use crate::constants::MAX_PROPOSAL_OPTIONS;
 use crate::errors::VoteError;
+use anchor_lang::prelude::*;
 
 use crate::state::{CommunitySpace, Proposal, VoteOption};
 
@@ -53,7 +53,7 @@ pub struct CreateProposal<'info> {
         init,
         payer = signer,
         space = 8 + 32  + 32 + 32 + 4 + (32 + 4) * MAX_PROPOSAL_OPTIONS + 8 + 4,
-        seeds = [b"proposal".as_ref(), &(community_space.proposal_count+1).to_le_bytes()],
+        seeds = [b"proposal".as_ref(), community_space.key().as_ref(), &(community_space.proposal_count+1).to_le_bytes()],
         bump
     )]
     pub proposal: Account<'info, Proposal>,
