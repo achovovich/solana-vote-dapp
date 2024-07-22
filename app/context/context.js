@@ -26,11 +26,13 @@ export const AppProvider = ({ children }) => {
 
     // =============================================================================================
     // A P P  ======================================================================================
-    const getApp = async (key) => {        
+    const getApp = async (pubKey) => {    
+        if (!pubKey) {return;}   
+        
         let app = (
-            await program.account.app.fetch(key)
+            await program.account.app.fetch(pubKey)
         )
-        app.publicKey = key;
+        app.publicKey = pubKey;
         return app;
     }
     
@@ -41,7 +43,9 @@ export const AppProvider = ({ children }) => {
         return spaces;
     }
     
-    const getSpace = async (pubKey) => {        
+    const getSpace = async (pubKey) => {     
+        if (!pubKey) {return;}   
+
         let space = (
             await program.account.communitySpace.fetch(pubKey)
         )        
