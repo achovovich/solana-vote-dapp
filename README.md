@@ -22,6 +22,15 @@ Vox Liquida is a decentralized, secure, and transparent voting platform that all
 4. __Follow Results__: Observe the results in real-time thanks to blockchain transparency.
 With Vox Liquida, every voice counts, and every vote has a real impact. Join us in transforming democracy, one decision at a time.
 
+## Live Demo
+
+Experience **Vox Liquida** in action by visiting our live demo:
+
+- [Vox Liquida Live Demo](https://vox-liquida.vercel.app/)
+
+This demo showcases the real-time capabilities and user experience of our voting platform, allowing you to interact with the features and functionalities built with our cutting-edge technology stack.
+
+
 ## Authors
 
 Vox Liquida is brought to you by a passionate team dedicated to revolutionizing the way we vote. Meet the creators:
@@ -44,6 +53,8 @@ This project is built with a combination of cutting-edge front-end and blockchai
 
 - **Solana**: A high-performance blockchain supporting builders around the world creating crypto apps that scale today.
 - **Rust**: The programming language used for developing smart contracts on the Solana blockchain, known for its safety and performance.
+- **Anchor**: A framework for Solana's Sealevel runtime providing several abstractions for writing Solana programs. It simplifies development by providing a high-level API, reducing boilerplate and making smart contract development more accessible.
+
 
 By leveraging these technologies, __Vox Liquida__ aims to provide a secure, transparent, and flexible voting platform that empowers users to express their opinions in a more nuanced way.
 
