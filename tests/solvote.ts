@@ -77,12 +77,47 @@ describe("solvote", () => {
     })
     .signers([wallet])
     .rpc();
+
+    await program.provider.connection.confirmTransaction(txHash);
     
     app = await program.account.app.fetch(appAccountPDA);
     assert.strictEqual(app.spaceCount, 1);
 
     let space = await program.account.communitySpace.fetch(spaceAccountPDA);
     assert.strictEqual(space.name, name);
+
+  });
+
+  it("Should create a proposal", async () => {
+        /* App info  */
+
+        const [appAccountPDA, bump1] =
+        await anchor.web3.PublicKey.findProgramAddress(
+          [
+            Buffer.from("app"),
+          ],
+          program.programId
+        );
+    
+        // //fetch the app account
+        let app = await program.account.app.fetch(appAccountPDA);
+    
+        /* end App info */
+    
+        // Perform an airdrop to the wallet address
+        // const txAirdrop = await program.provider.connection.requestAirdrop(wallet.publicKey, 10000000000);
+        // await program.provider.connection.confirmTransaction(txAirdrop);
+    
+        // const name = "My first space";
+    
+        const [spaceAccountPDA, bump] =
+        await anchor.web3.PublicKey.findProgramAddress(
+          [
+            Buffer.from("space"),
+            new Uint8Array(new Uint32Array([app.spaceCount + 1]).buffer),
+          ],
+          program.programId
+        );
 
   });
 
