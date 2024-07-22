@@ -52,7 +52,6 @@ export default function Proposal({ proposalKey }) {
                         ) : (
                             <VoteResult proposal={proposal} />
                         )}
-                        <Link href={"/spaces/" + proposal.spaceKey.toString()}>Retour sur l’espace</Link>
                     </>
                 </div>
             )}

@@ -37,8 +37,6 @@ export default function SpaceWorkSpace() {
             <LiquidBreadcrumb className="my-4 p-2 mb-5" />
             <SpacesList app={app} className="my-2" />
             <SpaceAdd app={app} className="my-2" />
-
-
         </div>
     );
 };

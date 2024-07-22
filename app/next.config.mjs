@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
     env: {
-        pgmAddress: 'AtWDuuXShFs28aVGQaohrgM1hyPyNQyV6Dd6Ps8STvCY',
+        pgmAddress: 'HBU1K3MPr3vqYFpgzaKLq437GXYqYLxZx5YnDBEghn9W',
       }
 };
 
