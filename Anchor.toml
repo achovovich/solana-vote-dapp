@@ -5,10 +5,12 @@ resolution = true
 skip-lint = false
 
 [programs.localnet]
-solvote = "4Cd7TvNJyjF2DFuWeKrMDJWqFtzCSH7Ry2VVM8E2DyeN"
+solvote = "3CxWxpWVQRpXhUXD8sUL28qnC8NnBnavY2oEvRfnvQ1d"
+#solvote = "4Cd7TvNJyjF2DFuWeKrMDJWqFtzCSH7Ry2VVM8E2DyeN"
 
-[registry]
-url = "https://api.apr.dev"
+
+# [registry]
+# url = "https://api.apr.dev"
 
 [provider]
 cluster = "Localnet"
