@@ -6,7 +6,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 import ProposalList from "../Proposals/List";
 import PageTitle from "@/components/PageTitle"
 import ProposalAdd from '@/components/Cards/ProposalAdd';
-import { BoxModelIcon } from '@radix-ui/react-icons'
+import LiquidBreadcrumb from '@/components/Header/Breadcrump';
 
 export default function Space({ spaceKey }) {
 
@@ -32,8 +32,9 @@ export default function Space({ spaceKey }) {
                 </div>
             ) : (
                 <div >
+                    <LiquidBreadcrumb className="my-4 p-2 mb-5" space={space} />
                     <div className="flex items-center ">
-                        <PageTitle text={"Bienvenue dans l'espace " + space.name} />
+                        <PageTitle text={"Bienvenue dans l’espace " + space.name} />
                     </div>
                     <ProposalList space={space} />
                     <ProposalAdd space={space} />

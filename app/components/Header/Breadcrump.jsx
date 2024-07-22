@@ -25,20 +25,33 @@ export default function LiquidBreadcrumb({ space, proposal, vote }) {
                 <BreadcrumbSeparator className={sepColor} />
 
                 <BreadcrumbItem >
-                    <BreadcrumbLink href="/spaces/list" className={textColor}>Espaces de votes</BreadcrumbLink>
+                    <BreadcrumbLink href="/spaces/list" className={textColor}>Espaces</BreadcrumbLink>
                 </BreadcrumbItem>
+                {(space || proposal) ? (
+                    <>
+                        <BreadcrumbSeparator className={sepColor} />
 
-                <BreadcrumbSeparator className={sepColor} />
+                        <BreadcrumbItem >
+                            {space ? (
+                                <>
+                                    {/* <BreadcrumbPage className={textColor}>{space.name}</BreadcrumbPage> */}
+                                    <BreadcrumbLink href={"/spaces/" + space.publicKey} className={textColor}>{space.name}</BreadcrumbLink>
+                                </>
+                            ) : (
+                                <BreadcrumbLink href={"/spaces/" + proposal.spaceKey.toString()} className={textColor}>Votes</BreadcrumbLink>
+                            )}
+                        </BreadcrumbItem>
+                        {proposal ? (
+                            <>
+                                <BreadcrumbSeparator className={sepColor} />
 
-                <BreadcrumbItem >
-                    <BreadcrumbPage className={textColor}>Space XXX</BreadcrumbPage>
-                </BreadcrumbItem>
-
-                <BreadcrumbSeparator className={sepColor} />
-
-                <BreadcrumbItem>
-                    <BreadcrumbPage className={textColor}>Votes</BreadcrumbPage>
-                </BreadcrumbItem>
+                                <BreadcrumbItem>
+                                    <BreadcrumbPage className={textColor}>{proposal.title}</BreadcrumbPage>
+                                </BreadcrumbItem>
+                            </>
+                        ) : null}
+                    </>
+                ) : null}
             </BreadcrumbList>
         </Breadcrumb>
     );

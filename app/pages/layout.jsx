@@ -27,7 +27,6 @@ export default function Layout({ children }) {
 
     // const endpoint = "http://127.0.0.1:8899";
     const endpoint = clusterApiUrl(WalletAdapterNetwork.Devnet);
-    // const endpoint = "https://sleek-wiser-glitter.solana-devnet.quiknode.pro/8ebc7b75bab038761734558f08ee223e4dbb1887/";
 
     const wallets = useMemo(
         () => [

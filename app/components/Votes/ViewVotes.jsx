@@ -62,7 +62,7 @@ export default function ViewVotes() {
                 </TableFooter>
             </Table>
 
-            <Link href="/">Retour à l'accueil</Link>
+            <Link href="/">Retour à l’accueil</Link>
         </div>
     );
 };

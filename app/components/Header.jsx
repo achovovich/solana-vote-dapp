@@ -15,7 +15,7 @@ const WalletMultiButtonNoSSR = dynamic(
 
 export default function Header() {
     return (
-        <div id="Header" className="w-full top-0 flex justify-between p-2 items-center mb-3" >
+        <div id="Header" className="w-full top-0 flex justify-between p-2 items-center mb-3 bg-cyan-600" >
             <div id="left" className='flex '>
                 <Link href="/" className='flex flex-row items-center'>
                     <Logo />
@@ -25,7 +25,7 @@ export default function Header() {
             </div>
             <div className='flex flex-row items-center'>
                 {/* <Balance /> */}
-                {/* <WalletMultiButton /> */}
+                <WalletMultiButton />
             </div>
         </div >
     )

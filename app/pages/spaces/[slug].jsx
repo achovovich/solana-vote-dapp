@@ -14,7 +14,6 @@ export default function SpacePage({ params }) {
         <Layout>
             <div>
                 <Space spaceKey={slug} />
-                <Link className="my-3" href="/spaces/list"> Retour aux Spaces</Link>
             </div>
 
         </Layout>

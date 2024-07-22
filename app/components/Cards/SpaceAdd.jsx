@@ -31,8 +31,8 @@ export default function SpaceAdd({ app }) {
                 <form  >
                     <div className="grid w-full items-center gap-4">
                         <div className="flex flex-col space-y-1.5">
-                            <Label htmlFor="name">Nom de l'espace</Label>
-                            <Input id="name" placeholder="Titre l'espace de vote" onChange={(e) => setSpaceName(e.target.value)} />
+                            <Label htmlFor="name">Nom de l&rsquo;espace</Label>
+                            <Input id="name" placeholder="Titre l’espace de vote" onChange={(e) => setSpaceName(e.target.value)} />
                             {/* {errors.name && <span>The email is required</span>} */}
                         </div>
                         {/* <Label htmlFor="whitelist">Adresses authorisées à voter:</Label> */}

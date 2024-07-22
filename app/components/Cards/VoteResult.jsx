@@ -43,12 +43,12 @@ export default function VoteResult({ proposal }) {
                                                     max={sum}
                                                     min={0}
                                                     value={option.count}
-                                                    gaugePrimaryColor="#6d28d9"//"rgb(79 70 229)"
-                                                    gaugeSecondaryColor="#67e8f9"//"rgba(0, 0, 0, 0.1)"
+                                                    gaugePrimaryColor="#6d28d9"
+                                                    gaugeSecondaryColor="#67e8f9"
                                                 />
                                                 <div>
                                                     <Label htmlFor={`option-${i}`} className="text-xl  border-b-2 border-cyan-600">
-                                                        {option.label + ' ' + Math.round(option.count / proposal.voteCount * 100) / 100}%
+                                                        {option.label}
                                                     </Label>
                                                 </div>
                                             </div>

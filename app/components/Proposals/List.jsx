@@ -45,6 +45,7 @@ export default function ProposalList({ space }) {
         return diff > 0 ? "En cours" : "Terminé";
     }
 
+
     return (
         <>
             {!spaceProposals ? (
@@ -68,20 +69,28 @@ export default function ProposalList({ space }) {
                             </TableRow>
                         </TableHeader>
                         <TableBody>
-                            {spaceProposals?.map((proposal) => (
-                                <TableRow key={proposal.publicKey}>
-                                    <TableCell className="font-medium">{proposal.title}</TableCell>
-                                    <TableCell className="font-medium">{getStatus(proposal)}</TableCell>
-                                    <TableCell className="text-right flex flex-row-reverse items-center justify-between">
-                                        <Link href={"/proposals/" + proposal.publicKey}><ArrowTopRightIcon className='text-purple-600' /></Link>
-                                    </TableCell>
-                                </TableRow>
-                            ))}
+                            {space.proposalCount >= 1 ? (
+                                spaceProposals?.map((proposal) => (
+                                    <TableRow key={proposal.publicKey}>
+                                        <TableCell className="font-medium">{proposal.title}</TableCell>
+                                        <TableCell className="font-medium">{getStatus(proposal)}</TableCell>
+                                        <TableCell className="text-right flex flex-row-reverse items-center justify-between">
+                                            <Link href={"/proposals/" + proposal.publicKey}><ArrowTopRightIcon className='text-purple-600' /></Link>
+                                        </TableCell>
+                                    </TableRow>
+                                ))) : null
+                            }
                         </TableBody>
                         <TableFooter>
                             <TableRow>
                                 <TableCell colSpan={4}>
-                                    <ListPaginate />
+                                    {space.proposalCount >= 1 ? (
+                                        <ListPaginate />
+                                    ) : (
+                                        <div className="text-center">
+                                            Aucun vote disponible
+                                        </div>
+                                    )}
                                 </TableCell>
                             </TableRow>
                         </TableFooter>
