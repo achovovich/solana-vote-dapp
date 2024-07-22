@@ -1,5 +1,6 @@
 import { PublicKey } from "@solana/web3.js";
 
-export const PROGRAM_ID = new PublicKey(
-    "AtWDuuXShFs28aVGQaohrgM1hyPyNQyV6Dd6Ps8STvCY" //devnet
-);
+const PGM_ADDRESS = process.env.pgmAddress;
+export { PGM_ADDRESS };
+
+export const PROGRAM_ID = new PublicKey(PGM_ADDRESS);

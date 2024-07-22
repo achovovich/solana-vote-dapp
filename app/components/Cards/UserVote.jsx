@@ -28,8 +28,8 @@ export default function UserVote({ proposal, userVote }) {
             </CustomCardHeader>
 
             <CardContent>
-                <h3>Vous avez utilisez {sum}% de votre voix</h3>
-                <Progress value="{sum}" className="bg-cyan-200 mb-6" />
+                <h3>Vous avez utilisé {sum}% de votre voix</h3>
+                {/* <Progress value="{sum}" className="bg-cyan-200 mb-6" /> */}
                 <form  >
                     <div className="grid w-full items-center gap-4">
                         <div className="flex flex-col space-y-1.5">

@@ -54,19 +54,26 @@ export default function SpacesList({ app }) {
                     </TableRow>
                 </TableHeader>
                 <TableBody>
-                    {spaces?.map((space) => (
-                        <TableRow key={space.publicKey}>
-                            <TableCell className="font-medium">{space.account.name}</TableCell>
-                            <TableCell className="text-right flex flex-row-reverse items-center justify-between">
-                                <Link href={"/spaces/" + space.publicKey}><ArrowTopRightIcon className='text-purple-400' /></Link>
-                            </TableCell>
-                        </TableRow>
-                    ))}
+                    {spaces.length >= 1 ? (
+                        spaces?.map((space) => (
+                            <TableRow key={space.publicKey}>
+                                <TableCell className="font-medium">{space.account.name}</TableCell>
+                                <TableCell className="text-right flex flex-row-reverse items-center justify-between">
+                                    <Link href={"/spaces/" + space.publicKey}><ArrowTopRightIcon className='text-purple-400' /></Link>
+                                </TableCell>
+                            </TableRow>
+                        ))) : null}
                 </TableBody>
                 <TableFooter>
                     <TableRow>
                         <TableCell colSpan={4}>
-                            <ListPaginate />
+                            {spaces.length >= 1 ? (
+                                <ListPaginate />
+                            ) : (
+                                <div className="text-center">
+                                    Aucun vote disponible
+                                </div>
+                            )}
                         </TableCell>
                     </TableRow>
                 </TableFooter>

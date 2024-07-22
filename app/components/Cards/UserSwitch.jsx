@@ -6,6 +6,7 @@ import { useAppContext } from "../../context/context";
 
 import VoteAdd from "@/components/Cards/VoteAdd";
 import UserVote from "@/components/Cards/UserVote";
+import VoteResult from "@/components/Cards/VoteResult";
 
 export default function UserSwitch({ proposal }) {
 
@@ -30,6 +31,8 @@ export default function UserSwitch({ proposal }) {
             ) : (
                 <UserVote proposal={proposal} userVote={uVote} />
             )}
+            <div className="mt-5"></div>
+            <VoteResult proposal={proposal} />
         </>
     );
 

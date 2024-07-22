@@ -8,7 +8,7 @@ import UserSwitch from "@/components/Cards/UserSwitch";
 import VoteResult from "@/components/Cards/VoteResult";
 import { EnvelopeClosedIcon } from '@radix-ui/react-icons'
 import Link from 'next/link';
-
+import LiquidBreadcrumb from '@/components/Header/Breadcrump';
 
 export default function Proposal({ proposalKey }) {
 
@@ -40,6 +40,7 @@ export default function Proposal({ proposalKey }) {
                 </div>
             ) : (
                 <div >
+                    <LiquidBreadcrumb className="my-4 p-2 mb-5" proposal={proposal} />
                     <div className="flex items-center ">
                         <EnvelopeClosedIcon className="text-purple-600 mr-2" />
                         <PageTitle text={"Vote " + proposal.title} />
@@ -51,7 +52,7 @@ export default function Proposal({ proposalKey }) {
                         ) : (
                             <VoteResult proposal={proposal} />
                         )}
-                        <Link href={"/spaces/" + proposal.spaceKey.toString()}>Retour sur l&rsquo;espace</Link>
+                        <Link href={"/spaces/" + proposal.spaceKey.toString()}>Retour sur l’espace</Link>
                     </>
                 </div>
             )}

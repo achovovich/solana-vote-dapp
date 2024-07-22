@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useCallback, useEffect } from "react"
+import { useRouter } from 'next/router';
 import { useAppContext } from "../../context/context";
 
 import { Button } from "@/components/ui/button"
@@ -15,7 +16,7 @@ export default function VoteAdd({ proposal }) {
     let options = proposal.options
 
     const { createVote } = useAppContext();
-
+    const router = useRouter();
     const [progressValue, setProgressValue] = useState(0);
     const [progressColor, setProgressColor] = useState();
     const [error, setError] = useState('');
@@ -58,6 +59,9 @@ export default function VoteAdd({ proposal }) {
 
         const checkedVote = vote.map(item => item === '' ? 0 : item);
         let e = await createVote(checkedVote, proposal.publicKey);
+        if (e === '') {
+            router.reload();
+        }
         setErrorSubmit(e);
     }
 
