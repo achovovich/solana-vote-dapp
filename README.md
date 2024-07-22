@@ -22,6 +22,40 @@ Vox Liquida is a decentralized, secure, and transparent voting platform that all
 4. __Follow Results__: Observe the results in real-time thanks to blockchain transparency.
 With Vox Liquida, every voice counts, and every vote has a real impact. Join us in transforming democracy, one decision at a time.
 
+## Authors
+
+Vox Liquida is brought to you by a passionate team dedicated to revolutionizing the way we vote. Meet the creators:
+
+- **Jordan DIVITA** - [GitHub](https://github.com/wwwookiee)
+- **Olivier MARGRIT** -  [GitHub](https://github.com/achovovich)
+
+## Technologies Used
+
+This project is built with a combination of cutting-edge front-end and blockchain technologies. Here's a breakdown of the main technologies used:
+
+### Front-End Technologies
+
+- **React**: A JavaScript library for building user interfaces, allowing us to create a dynamic and interactive experience.
+- **Next.js**: A React framework that enables functionality such as server-side rendering and generating static websites for React based web applications.
+- **TailwindCSS**: A utility-first CSS framework for rapidly building custom designs without having to leave your HTML.
+- **Shadcn.ui**: A modern UI library for React that provides beautifully designed components to accelerate development.
+
+### Blockchain Technologies
+
+- **Solana**: A high-performance blockchain supporting builders around the world creating crypto apps that scale today.
+- **Rust**: The programming language used for developing smart contracts on the Solana blockchain, known for its safety and performance.
+
+By leveraging these technologies, __Vox Liquida__ aims to provide a secure, transparent, and flexible voting platform that empowers users to express their opinions in a more nuanced way.
+
+## Deployment
+
+The Vox Liquida voting program is deployed on the Solana blockchain. You can view the program and its transactions on the Solana Explorer:
+
+- **Solana Program Address**: [HBU1K3MPr3vqYFpgzaKLq437GXYqYLxZx5YnDBEghn9W](https://explorer.solana.com/address/HBU1K3MPr3vqYFpgzaKLq437GXYqYLxZx5YnDBEghn9W?cluster=devnet) (Devnet)
+
+This link provides insights into the program's transactions, performance, and more, showcasing the transparency and efficiency of our blockchain-based solution.
+
+
 
 ## Getting Started
 
