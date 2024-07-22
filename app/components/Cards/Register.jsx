@@ -28,7 +28,7 @@ export function Register() {
                         <div className="grid gap-2 text-center">
                             <h1 className="text-3xl font-bold">Creation de compte</h1>
                             <p className="text-balance text-muted-foreground">
-                                Inscrivez votre email et l'adresse de votre portefeuille Solana
+                                Inscrivez votre email et l&rsquo;adresse de votre portefeuille Solana
                             </p>
                         </div>
                         <div className="grid gap-4">

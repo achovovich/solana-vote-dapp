@@ -33,7 +33,7 @@ export default function Space({ spaceKey }) {
             ) : (
                 <div >
                     <div className="flex items-center ">
-                        <PageTitle text={"Bienvenue dans l'espace " + space.name} />
+                        <PageTitle text={"Bienvenue dans l&rsquo;espace " + space.name} />
                     </div>
                     <ProposalList space={space} />
                     <ProposalAdd space={space} />
